@@ -1,0 +1,85 @@
+一些关于react-router-dom的使用以及documentation相关点：
+    1.关于使用：
+        （1）.以数组形式引入各个route，每个route项包含该路由的相关配置，如：path(路径)、exact（是否精确匹配）、subRoutes（包含的子路由）等信息；
+        （2）.自定义组件，结合React-router-dom的Route组件，遍历获取的路由数组，生成便返回路由virtual node；
+        （3）.在root node（app.js）中引入该路由组件，达到引入各个组件的目的；
+
+        // 第一步
+        export default [
+          {
+            path: '/',
+            exact: true,
+            component: Loadable({
+              loader: () => import('@/pages/login/login'),
+              loading: RouterLoading,
+            }),
+          },
+          {
+            path: '/admin',
+            // component: admin,
+            component: Loadable({
+              loader: () => import('@/pages/admin'),
+              loading: RouterLoading,
+            }),
+            subRoutes: [
+              {
+                path: '/admin/realm',
+                exact: true,
+                component: Loadable({
+                  loader: () => import('@/pages/admin/realm/realm'),
+                  loading: RouterLoading,
+                }),
+              }
+            ]
+          }
+        ]
+
+        // 第二步
+        import React from 'react';
+        import { Route } from 'react-router-dom';
+
+        export default class RouteWithSubRouters extends React.Component {
+          render() {
+            const route = this.props;
+            return (
+              <Route
+                path={route.path}
+                exact={!!route.exact}
+                render={props => (
+                  <route.component {...props} subRoutes={route.subRoutes} />
+                )}
+              />
+            );
+          }
+        }
+
+        // 第三步
+        import React from 'react';
+        import { Switch } from 'react-router-dom';
+        import RouteWithSubRouters from './RouteWithSubRouters';
+        import routers from '@/routers';
+
+        export default class App extends React.Component {
+          render() {
+            return (
+              <React.Fragment>
+                <Switch>
+                  {routers.map((route, index) => {
+                    return <RouteWithSubRouters key={index} {...route} />;
+                  })}
+                </Switch>
+              </React.Fragment>
+            );
+          }
+        }
+
+拓展create-react-app创建的项目的webpack配置项方法：   https://blog.csdn.net/qq_22889599/article/details/79507721
+
+react-router-dom 包含 Link Route Switch BrowserRouter：（详细参见react-router-dom官方文档：https://reacttraining.com/react-router/web/api/Route/component）
+
+    BrowserRouter 即Router，路由总组件，用以装载单个Route以及Switch；
+    Route 路由组件，负责将各个组件引入并渲染成路由组件；包含三大props：location、history、match；match又包含params、exact(是否精准匹配，即是否会连带渲染上级组件)、path、url这些属性；
+            <Route extra=true/false path="/current/path" render={(props) => {}} component={anyComponent}>
+        可以通过render函数（方便的在线渲染和包装）或者component传入组件
+    Switch 只渲染第一个匹配到的<路由组件>或<重定向组件>。
+
