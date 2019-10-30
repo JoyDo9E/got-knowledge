@@ -73,7 +73,7 @@ vue传值
 	2.query传参： this.$router.push({path:'/uapbd/paraset/edit',query:{pk_refinfo:'test',value:'test1'}});   目标页面接收参数：this.$route.query.pk_refinfo
 两种方式的区别是query传参的参数会带在url后边展示在地址栏，params传参的参数不会展示到地址栏。需要注意的是接收参数的时候是route而不是router。两种方式一一对应，名字不能混用。
 
-在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中，原因是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳
+在Vue生命周期的created()钩子函数进行的DOM操作一定要放在Vue.nextTick()的回调函数中，原因 是在created()钩子函数执行的时候DOM 其实并未进行任何渲染，而此时进行DOM操作无异于徒劳
 
 $emit表示触发事件的意思？
 
