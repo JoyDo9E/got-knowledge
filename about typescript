@@ -1,0 +1,27 @@
+1.typescript引入模块，区分于社区标准 require()和ES6语法import :
+    import foo = require("foo");
+    foo.doStuff();
+2.导出模块方式，区分于社区标准：module.exports = exports
+    export function fn() {}    或
+    const obj = {};
+    export = obj
+// export function myFn (f: (x: number) => void, nums: number[]): void;
+// export function myFn (f:(x: number) => void, ...nums: number[]): void; // 使用剩余参数（ ...nums）来表示之后的其它所有参数必须是number类型
+3.定义对象：
+    1).对象字面量法
+        let options = {
+            color: "red",
+            volume: 11
+        };
+    2).定义对象类型和类型断言到对象字面量上：
+        interface Object {name: string, age: number}
+        let obj = {} as Object;
+        obj.name = 'pt'
+        obj.age = 23
+4.在某些情况下TypeScript没法确定某些值的类型。 那么TypeScript会使用 any类型代替。
+5.默认地，TypeScript把null和undefined当做属于任何类型。可以使用联合类型。 比如，某值可能为 number或null，你可以声明它的类型为number|null
+6.假设有一个值TypeScript认为可以为null或undefined，但是你更清楚它的类型，你可以使用!后缀。
+  declare var foo: string[] | null;
+  foo.length;  // error - 'foo' is possibly 'null'
+  foo!.length; // okay - 'foo!' just has type 'string[]' // 等价于  !!foo && foo.length ？？？
+7.keyof {name: string, age: number} // string | number   返回一个联合类型

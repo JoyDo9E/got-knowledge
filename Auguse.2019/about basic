@@ -29,3 +29,20 @@
 8.DNS：域名系统（Domain Name System缩写DNS，Domain Name被译为域名）是因特网的一项核心服务，它作为可以将域名和IP地址相互映射的一个分布式数据库，能够使人更方便的访问互联网，而不用去记住能够被机器直接读取的IP数串。DNS本地缓存则为host文件，远端DNS服务器则为分布式服务器。
 9.PAC模式（proxy auto config）根据请求地址动态的设置代理地址  pac文件编辑方式：https://www.cnblogs.com/milton/p/6263596.html && http://findproxyforurl.com/pac-functions/
 10.网络协议示意图：https://upload-images.jianshu.io/upload_images/11362584-157a39882f263361.png?imageMogr2/auto-orient/strip|imageView2/2/w/612/format/webp
+11.https协议的工作流程：https://www.cnblogs.com/anyehome/p/8858456.html
+12.for...in和for...of的区别（可迭代类数组对象，且自动不遍历非自身属性，除原型属性，继承属性之外的属性）：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of
+13.通过修改react-scripts来自定义create-react-app的模板; // https://www.sheng00.com/2728.html
+14.css模块化：
+    {
+        test: /^.(sass|less|css|scss)$/,
+        use: [
+            'style-loader',
+            {
+                loader: 'css-loader',
+                options: {
+                    modules: true
+                }
+            },
+            ['sass-loader', 'less-loader']
+        ]
+    }

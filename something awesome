@@ -1,0 +1,28 @@
+1.使用js生成器yeild将异步promise变为同步（递归）：
+    function himmel(gen) {
+      const item = gen.next()
+      if (item.done) {
+        return item.value
+      }
+
+      const { value, done } = item
+      if (value instanceof Promise) {
+        value.then((e) => himmel(gen))
+      } else {
+        himmel(gen)
+      }
+    }
+2.链式递加函数：
+      满足：
+          add(1); // 1
+          add(1)(2)(3)(4); // 10
+          var addTwo = add(2);
+          addTwo; // 2
+          addTwo + 5; // 7
+      函数为：
+          var add = function(n) {
+            const f = x => add(n + x)
+            f.valueOf = () => n
+            return f;
+          }
+3.MutationObserver接口提供了监视对DOM树所做更改的能力。（可以通过次api实现监听某一dom元素变化的目的） # https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver
