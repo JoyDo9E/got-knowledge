@@ -1,0 +1,14 @@
+1.可以将数组，类数组对象（全部或者抽取部分属性）到另一对象中：
+    let a = {name: 'pt', age: 12, sex: 'man', hobby: 'game'};
+    ['name', 'hobby', 'age'].reduce((newObj, item) => {
+        newObj[item] = a[item];
+        return newObj;
+    }, {
+        // 初始化的newObj
+        type: 'person'
+    });
+2.筛选对象部分属性转化为字符串：
+    let a = {name: 'pt', age: 12, sex: 'man', hobby: 'game'};
+    JSON.stringify(a, 'name', 2) // "{'name': 'pt'}" 2：表示指定缩进用2个空白字符串
+3.指定react-scripts的版本用以创建新react项目命令： create-react-app test-app --scripts-version customized-react-scripts;
+4.react-router官方文档：https://reacttraining.com/react-router/web/api/BrowserRouter

@@ -31,6 +31,7 @@
 10.网络协议示意图：https://upload-images.jianshu.io/upload_images/11362584-157a39882f263361.png?imageMogr2/auto-orient/strip|imageView2/2/w/612/format/webp
 11.https协议的工作流程：https://www.cnblogs.com/anyehome/p/8858456.html
 12.for...in和for...of的区别（可迭代类数组对象，且自动不遍历非自身属性，除原型属性，继承属性之外的属性）：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...of
+    for...in遍历的是类数组对象/对象的key值；而for...of遍历的是value
 13.通过修改react-scripts来自定义create-react-app的模板; // https://www.sheng00.com/2728.html
 14.css模块化：
     {
@@ -45,4 +46,23 @@
             },
             ['sass-loader', 'less-loader']
         ]
+    }
+15.所有的计算都可随数字的大小变化而变化，如8位二进制数无法表示，超过八位，表示为16位二进制数，1byte递增；
+    计算机不做减法 只做加法
+    原码：数的二进制（正数不变，负数的第一位为符号为1，如：-8， 10001000）；反码：正数不变；负数符号位不变，其他位按位取反；补码：正数不变；负数在反码的基础上加1
+    如： -300 - 400
+        -300，原：1000000100101100；反：1111111011010011；补：1111111011010100
+        -400，原：1000000110010000；反：1111111001101111；补：1111111001110000
+        结果：11111110101000100（17位，多余16位，去除第一位，1111110101000100）
+16.antd骨架加载样式:
+    animation: ant-skeleton-loading 1.4s ease infinite;
+    background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+    background-size: 400% 100%;
+    @keyframes ant-skeleton-loading{
+        0% {
+                background-position: 100% 50%;
+            }
+        100% {
+            background-position: 0 50%;
+        }
     }
