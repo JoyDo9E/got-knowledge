@@ -278,6 +278,14 @@ modifiers：一个对象，包含修饰符，如果有的话。例如，在 v-my
 vnode：由 Vue 编译器(Vue’s compiler)生成的虚拟 Node 节点(virtual node)。更多细节请查看 VNode API。
 oldVnode：之前的虚拟 Node 节点(virtual node)，只在 update 和 componentUpdated 钩子函数中可用。
 
+=========
+module.exports=exports & require 与 export & export default & import的区别：
+CommonJS模块输出是一个值的拷贝，ES6模块输出是值的引用。
+CommonJS模块是运行时加载，ES6模块是编译时输出接口。
+CommonJS模块无论require多少次，都只会在第一次加载时运行一次，然后保存到缓存中，下次在require，只会去从缓存取。
+module.exports与exports ，是CommonJS的规范，被使用于Node.js中。export与export default ，是ES6规范，被使用于React或Vue中。
+=========
+
 Redux相关：
 	1.action必须是type, payload, error, meta中的一种；
 	2.按照惯例，如果error: true，payload应该是一个error对象
