@@ -1,0 +1,93 @@
+Node.js相关 (命令行中，使用 node --use_strict 命令执行严格模式)
+在 macOS 和 Linux 上会使用 argv[0] 的值作为进程的标题，而在 Windows 和 SunOS 上则使用 command 作为标题
+1.断言：
+(1)提供了断言测试的函数，用于测试不变式。assert模块抛出的所有错误都是new assert.AssertionError(options)的实例
+	message <string> 如果有值，则错误信息会被设为该值。
+	actual <any> 错误实例的 actual 属性会被设为该值。 用于 actual 的错误输入，例如使用 assert.strictEqual()。
+	expected <any> 错误实例的 expected 属性会被设为该值。 用于 expected 的错误输入，例如使用 assert.strictEqual()。
+	operator <string> 错误实例的 operator 属性会被设为该值。 用于表明比较时使用的是哪个操作（或触发错误的是哪个断言函数）。
+	stackStartFn <Function> 如果有值，则由提供的函数生成堆栈踪迹。
+(2)assert(value [, message])等价于 assert.ok(value [, message])  真值判断   检测value的值是否为true(包含隐式转换)；
+(3)assert.deepEqual(actual, expect [, message])   判断两值是否完全相等；（并非全等，包含隐式转换）；assert.deepStrictEqual(actual, expect [, message])  判断两值是否全等；   对于对象来说 原型不同则两者不等  两个判断方法都不等；
+   与之相反的方法是assetr.notDeepStrictEqual(actual, expect [, message]) 如果两者全等则抛出异常
+(4)assert.fail([message])抛出错误   message代表着异常错误信息。
+(5)assert.doesNotReject(asyncFunc/promise, error [, message]) 检测异步函数是否被reject   与之相反的方法是  assert.rejects(asyncFunc/Promise, error [, message])   与assert.throws(fn [, error ][, message])对比  区别在于后者检测一般函数  不能检测异步函数
+
+断言主要用于在实际的函数，赋值，判断时，相当于原生js中的相关判断
+
+2.async_hooks异步钩子
+     async_hooks 基于一种resource（资源）的概念，一个resource会触发上面提到的async_hooks的回调函数。这种resource可以是TTYWRAP 、SSLCONNECTION 或者任何使用 Embedder API（using the Embedder API, users can provide and document their own resource objects. For example, such a resource object could contain the SQL query being executed，包含其他脚本语言的执行体，方法包括（）） 定义的内容。（网络传输中的资源resource）;
+1.基本调用公式：
+	var asyncHooks = require('async_hooks');
+	asyncHooks.createHook( callbacks ).enable() / .disable();  enable()方法用于启动跟踪方法/disable()方法用于停止跟踪方法
+callbacks包括以下4个生命周期：
+	init: fn(asyncId, type, triggerAsyncId, resource)   asyncId表示当前资源ID， type表示当前资源类型， triggerAsyncId表示 创建 并 执行 上下文的异步资源的惟一ID，resource表示当前的资源，用于查看出触发原因
+		type包含当前资源的类型，有：
+				FSEVENTWRAP, FSREQWRAP, GETADDRINFOREQWRAP, GETNAMEINFOREQWRAP, HTTPPARSER, JSSTREAM, PIPECONNECTWRAP, PIPEWRAP, PROCESSWRAP, QUERYWRAP, SHUTDOWNWRAP, 						SIGNALWRAP, STATWATCHER, TCPCONNECTWRAP, TCPSERVER, TCPWRAP（客户端发起的新连接，发起连接立即创建， happens outside of any JavaScript stack. (An executionAsyncId() of 0 means that it is 				being executed from C++ with no JavaScript stack above it.) ）, TIMERWRAP, TTYWRAP, UDPSENDWRAP, UDPWRAP, WRITEWRAP, ZLIB, SSLCONNECTION, PBKDF2REQUEST, RANDOMBYTESREQUEST, 				TLSWRAP, Timeout, Immediate, TickObject， PROMISE
+	before:fn(asybcId)   异步操作初始化之后执行before周期方法   允许调用0至N次
+	after:fn(asyncId)   before周期方法完成之后立即调用after，若发生错误，after会在抛出错误之后执行；
+	destory:fn(asyncId)  在与asyncId相对应的资源被销毁后被调用，也会在 the embedder API emitDestroy().方法调用时调用destroy();
+	promiseResolve: fn(asyncId)   当函数返回promise且结果为resolve时被调用
+async_hooks.executionAsyncId()  表示当前执行的上下文（估计是当前的执行环境中的资源ID  this）
+async_hooks.triggerAsyncId()    返回出发当前资源的资源ID
+asyncResource.runInAsyncScope(fn[, thisArg, ...args])  用于异步资源中（embedder API）触发callbacks的before、after生命周期方法
+asyncResource.emitDestroy()  用于异步资源触发destroy()生命周期方法。
+
+异步钩子   async_hooks主要用于监测、跟踪相关网络请求资源信息（发起、连接、关闭等）
+
+3.child_process 子进程相关，模拟提供衍生子进程的功能，主要由child_process.spawn()提供；Node.js 的父进程与衍生的子进程之间会建立 stdin、stdout 和 stderr 的管道。
+	在类 Unix 操作系统（Unix、 Linux、 macOS）上，child_process.execFile() 效率更高，《因为它不需要衍生 shell》；在 Windows 上，.bat 和 .cmd 文件在没有终端的情况下是不可执行的，因此不能使用 child_process.execFile() 启动。 可以使用设置了 shell 选项的 child_process.spawn() / exec() / execFile() / fork() 衍生 cmd.exe 并将 .bat 或 .cmd 文件作为参数传入（也就是 shell 选项和 child_process.exec() 所做的工作）。 如果脚本文件名包含空格，则需要加上双引号。
+	child_process.spawnSync()、child_process.execSync() 和 child_process.execFileSync() 是同步的(上行三方法的同步版本)，且会阻塞 Node.js 事件循环直到衍生的进程退出。在有用户输入的情况下，最好不使用exec方法，而是使用execFile方法。
+	child_process.execFile('command' [,arguments] [,options] [,callback])  command表示执行的命令，arguments参数是一个数组对象, options表示运行的环境相关参数， callback(err, stdout, stderr)   命令不是直接在shell中运行  较exec()更安全；
+	child_process.exec('command' [,options] [,callback]) 用户输入的命令直接运行在shell中，较为不安全;
+	child_process.spawn('command' [,args] [,options])  返回<childProcess>，没有回调函数，只能通过data事件监听获取运行的结果；《属于异步执行，适用于子进程长时间运行的情况》
+	<child_process.fork(modulePath [,args] [,options]) 是 child_process.spawn() 的一个特殊情况，返回<childProcess>，用于专门衍生新的 Node.js 进程。 返回的 ChildProcess 有一个额外的内置通信通道，允许消息在父进程和子进程之间来回传递 modulePath 表示子进程需要运行的脚本的路径。>
+	同步的方法都需要等子进程完全退出之后才会返回运行结果，其中execSync() / execFileSync()返回 stdout的  <Buffer | String>对象，spawnSync()返回一个包含子进程相关信息的对象。
+
+ref() / unref()方法用于启用、停止
+
+一个供js的前端或者js服务器执行系统脚本的类。
+
+4.cluster  集群 （node有4种创建进程的方式 spawn(), exec(), execFile(), fork()）
+     工作进程由child_process.fork()方法创建，因此它们可以使用IPC和父进程通信，从而使各进程交替处理连接服务。cluster支持两种连接分发模式：循环法，主进程监听端口，将连接循环分发给工作进程；主进程创建监听socket后发给相关的工作进程，由工作进程直接负责接受连接
+worker类相关（worker对象包含了关于工作进程所有的public信息和方法）（cluster.fork()创建Worker类工作进程）：
+	在主进程内可以通过 cluster.workers 来获取Worker对象；
+	在工作进程内可以通过 cluster.worker 来获取Worker对象；
+
+	disconnect 事件  与 cluster.on('disconnect')事件相似：
+		cluster.fork().on('disconnect', fn)                 // worker disconnect时触发的事件
+	error 事件  与child_process.fork()提供的error事件相同
+		在一个工作进程中，可使用 process.on('error', fn)
+	exit 事件  与cluster.on('exit')事件相似，但worker类的exit事件针对特定的工作进程
+		worker.on('exit', (code, signal) => {}) 
+		code 表示退出的代码  number类型
+		signal 表示进程被kill的信号名称
+	listening 事件  与cluster.on('listening',fn)事件类似，但针对特定的工作进程
+		worker.on('listening', fn(address) ) // cluster.fork() <=> worker
+	message 事件 与cluster.on('message',fn)事件类似，针对特定的工作进程 // 主进程用 process.on('message', fn(message))取得子进程发送的信息；子进程使用 process.send( messageObj )来发送信息（messageObj为信息体对象）
+	worker.disconnect() 方法  在一个  工作进程  内调用此方法会关闭所有的server
+	worker.kill( [,signal] )
+
+worker.id  获取创建工作进程时被分配到唯一ID;
+worker.isConnected()  当工作进程通过IPC管道连接到主进程时，该方法返回 true  反之  返回 false （工作进程创建之后会自动连接到它的主进程 fork方法）
+worker.isDead()  当工作进程被终止时（自动退出或被发送信号时）返回true 反之返回false
+《所有的工作进程都是child_process.fork()来创建的，返回的对象被存储为.process》
+
+cluster相关事件与方法
+	'disconnect'事件 当工作进程与IPC管道断开时触发此事件；cluster.on('disconnect',fn(worker))
+	'exit'事件  任何一个工作进程关闭时  cluster模块将出发此事件 cluster.on('exit',fn(worker, code, signal))
+	'fork' 事件   任何工作进程被创建 fork，cluster模块将触发fork事件， cluster.on('fork',fn(worker))
+	'listening' 事件  当一个工作进程调用listen()后，工作进程上的server和cluster都会触发listening事件  cluster.on('listening', fn(worker, address))
+
+主要作用是模拟分布式，多线程处理IO密集型请求相关，提升性能。
+
+5.DNS域名服务器相关  let dns = require('dns')
+	dns.lookup('域名', function(err, address, family) {})  使用底层操作系统工具进行域名解析，且无需进行网络通信   family返回协议簇类型   IPV4 / IPV6；
+	dns.resolve()、dns.resolve*() 以及 dns.reverse()  与  dns.lookup()  的区别与差异：
+		这些功能实现与dns.lookup()截然不同。它们不仅没有使用getaddrinfo(3)并且通过网络执行DNS查询。使用异步网络通信，并且没有使用libuv线程池。
+		因此,这些函数不会像使用libuv线程池的dns.lookup()函数一样会对其它进程有负面影响。
+		它们不像dns.lookup()一样使用相同的配置文件。例如，它们不会使用来自/etc/hosts配置。
+	
+	dns.Resolver类: dns的独立解析程序   const {Resolver} = require('dns')  ==>const Resolver = dns.Resolver;  独立于全局设置，单独设置某次操作的dns服务器域名。
+		const resolver = new Resolver();  resolver.setServers(['4,4,4,4']);  resolver.resolve4('zhihu.com', function(err, addresses){})...
+	
