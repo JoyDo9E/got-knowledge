@@ -1,0 +1,85 @@
+webpack相关;    https://www.webpackjs.com/configuration/
+	 webpack 配置是标准的 Node.js CommonJS 模块，可以通过require ( ... ) 导入其他文件 使用js控制流表达式 以及其他函数等
+
+ 4个核心概念：（入口起点）entry/（输出）output/loader/插件（plugins）
+	const path = require ('path')   // Node.js 核心模块  https://nodejs.org/api/modules.html
+	const HtmlWebpackPlugin = require('html-webpack-plugin'); // 已通过 npm 安装的插件
+	const webpack = require('webpack'); //访问内置的插件
+	module.exports = {
+	  entry: './path/to/my/entry/file.js',     //是 entry: {main: './path/to/my/entry/file.js'}的简写
+	  mode: 'development'，
+	  output: {
+	       path: path.resolve(__dirname,'dist'),    //结合nodejs的path模块  动态设置生成的bundle的绝对路径   
+	       filename: 'my-dirst-bundle.js'   //指定生成的bundle的名称
+	  }，
+	  devtool: "#source-map"/“#cheap-module-eval-source-map”  // 生成代码的详细程度（可读性）source-map的可读性最好
+	  module: {
+	       rules: [
+		     {
+			test: /.vue$/,
+			include: [           //   test和include是必须匹配选项，exclude是必不匹配选项（优先级高于test和include）  test匹配文件名，include和exclude匹配文件的绝对路径
+			          path.resolve(__dirname, "app")
+			],
+		               exclude: [
+			          path.resolve(__dirname, "app/demo-files")
+			],
+			use: 'vue-loader'           <===>    { test:/.vue$/, use:[ { loader: 'vue-loader' }, options: { modules: true,   添加loader的配置项 } ] }
+		     }    
+		]
+	  },
+	  resolve: {    //解析模块请求的选项（不适用于对loader的解析）
+
+	  },
+	  plugins: [
+		new HtmlWebpackPlugin(配置项options)   //使用new关键字使用插件
+	  ]
+	};
+
+	entry    默认值为 './src'   内部依赖的开始点  （故在自定义路径时   相对路径都是以 './src'  为根路径的）
+
+	output   制定创建的bundles的输出路径  默认为  './dist'
+		path属性用于配置输出文件的路径，filename属性用以配置输出文件名；当输出多个文件时   可用 '[name].js'占位。
+
+	loader    让webpack能够去处理非javascript文件，将所有类型的模块转化为webpack能处理的有效模块，再处理 （loader可以import任何类型的模块  只需要require(需要引入的文件)  即可）对模块的源代码进行转换
+		1.test属性， 相当于正则匹配需要处理的文件名称   单个或者多个  （一个匹配文件名的正则表达式）
+		2.use属性， 指定处理对应test匹配的文件需要用到的loaders
+	             在webpack中定义loader时  要定义在module.rules中而非rules
+		支持链式传递，源代码经过某一个loader处理之后，传递给下一个loader处理（相当于gulp的pipe()方法，grunt的task）；
+		可以是同步，也可以是异步的
+		运行在node.js中
+		
+		
+
+	plugins   打包优化  压缩以及重新定义环境中的变量   new关键字使用插件
+		一个具有apply 属性的javascript对象  必须传入一个new的插件实例
+
+	mode   配置运行环境   备选项为   'development'  和  'production'   只设置 NODE_ENV   不会自动生成mode属性
+		mode='development'  ：  将 process.env.NODE_ENV 设置成为development，  意味着自动启用namedChunksPlugin 和 namedModulesPlugin 配置项(plugin)
+		mode='production'    :    将process.env.NODE_ENV  设置成为production，   意味着自动启用FlagDependencyUsagePlugin, FlagIncludedChunksPlugin, ModuleConcatenationPlugin, NoEmitOnErrorsPlugin, OccurrenceOrderPlugin, 				       		SideEffectsFlagPlugin 和 UglifyJsPlugin 配置项(plugin)
+	runtime  用于在模块交互时，连接模块所需的加载和解析逻辑； manifest   保留所有模块的详细要点 原始文档目录 路径等
+
+
+
+（path.resolve(from, to)方法用于结合参数（参数可以是字符串，或者路径）生成绝对路径）
+	path.resolve('C:/Users/pengtao/Desktop/icon','./NRI.png')     //return： 'C:\\Users\\pengtao\\Desktop\\icon\\NRI.png'
+	 path.resolve('C:/Users/pengtao/Desktop/icon','..','./NRI.png')    //return： 'C:\\Users\\pengtao\\Desktop\\NRI.png'      //   '..'操作符是在上一路径基础上 返回上一层   再结合后续的字符串生成绝对路径
+
+css-loader: 加载.css文件
+style-loader:使用<style>将css-loader内部样式注入到我们的HTML页面
+
+npm install -dev webpack-dev-server
+
+新建webpack.dev.config.js文件，添加测试版本的webpack配置项
+	const webpack = require('webpack');
+	const config = require('./webpack.common.config');
+	config.devServer = {
+  	  hot: true, // 热更新
+	  inline: true
+	  host: '192.168.3.115' // 设置webpack热更新的主机名
+	  port: '8088' // 设置webpack热更新的端口号  默认为8080
+  	  publicPath: '/dist/'
+	}
+	config.plugins.push(new webpack.HotModuleReplacementPlugin());
+	module.exports = config;
+
+与production模式下比较而言， production会将项目构建编译之后  放入写好的文件目录下， 而development模式下   直接localhost:端口号打开就ok了。
