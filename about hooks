@@ -42,3 +42,4 @@
     12).高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。高阶组件是参数为组件，返回值为新组件的函数。
     13).useMemo(fn, [依赖的state]);由于函数式组件无法通过shouldComponentUpdate精确控制渲染行为,故使用useMemo来控制，只有当依赖的state值改变时，才会出发fn函数的执行
     14).useCallback传入一个内联回调和一个输入数组，返回一个带有记忆的函数，只有输入数组中其中一个值变化才会更改。useCallback(fn, inputs) 等价于 useMemo(() => fn, inputs)。
+    15).useMemo/useCallback在组件初始化时就会执行，而useEffect在render()之后才会执行，如果其依赖为'[]'，则表示只会执行一次。

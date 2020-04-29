@@ -1,0 +1,61 @@
+/*利用text-shadow实现发光文字效果*/
+.neon {
+    color: #cce7f8;
+    font-size: 2.5rem;
+    font-family: 'Pacifico', cursive;
+    text-transform: uppercase;
+    animation: shining 0.1s alternate infinite;
+}
+
+@keyframes shining {
+    from {
+        text-shadow: 0 0 6px rgba(182, 211, 207, 0.9),
+        0 0 30px rgba(182, 211, 207, 0.3), 0 0 12px rgba(15, 115, 223, 0.5),
+        0 0 21px rgba(15, 115, 223, 0.9), 0 0 34px rgba(15, 115, 223, 0.8),
+        0 0 54px rgba(15, 115, 223, 0.9);
+    }
+    to {
+        text-shadow: 0 0 6px rgba(182, 211, 207, 1),
+        0 0 30px rgba(182, 211, 207, 0.4), 0 0 12px rgba(15, 115, 223, 0.6),
+        0 0 22px rgba(15, 115, 223, 0.8), 0 0 38px rgba(15, 115, 223, 0.9),
+        0 0 60px rgba(15, 115, 223, 1);
+    }
+}
+
+/* 利用背景、绝对定位和filter实现毛玻璃景深效果 */
+//<div class="glass"></div>
+//<div class="frosted-bg"></div>
+.frosted-bg,
+.glass {
+    background: url(https://i.loli.net/2019/11/17/GAYyzeKsiWjP5qO.jpg) no-repeat center / contain;
+}
+
+.frosted-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 1s;
+}
+
+.glass {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 600px;
+    height: 450px;
+    transform: translate(-50%, -50%);
+    transition: 1s;
+
+    &:hover {
+        box-shadow: 0 0.7px 1.7px rgba(0, 0, 0, 0.248),
+        0 1.7px 4.3px rgba(0, 0, 0, 0.355), 0 3.5px 8.9px rgba(0, 0, 0, 0.445),
+        0 7.3px 18.3px rgba(0, 0, 0, 0.552), 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
+
+    &:hover ~ .frosted-bg {
+        filter: blur(10px);
+    }
+}

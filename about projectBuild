@@ -1,0 +1,47 @@
+需求：
+    create-react-app的打包后index页面内引用其他资源的路径问题，需要项目build之后，其资源引入路径为"./..."类似的。
+解决方式：
+    "homepage": "."    （在package.json中设置， 其他方法详见 https://github.com/facebook/create-react-app/issues/821)
+    (umi框架的项目在umirc.js中设置 publicPath: './')
+
+需求：
+    使用@loadable/component时，路径正确仍然不能成功引入组件。
+解决方式：
+    只能直接写成这样，不能再以loadable封装一层函数（导致拆分失败，无法成功引入组件）
+    Loadable(
+      () => pMinDelay(import('@/layout/baseLayout/index'), 200),
+      {
+        fallback: <Loading />
+      }
+    )
+需求：
+    hashRouter和browserRouter的区别，何时使用何种路由方式。
+解决方式：（https://www.thinktxt.com/react/2017/02/26/react-router-browserHistory-refresh-404-solution.html）
+    browserRouter，形如 '/routes/route'，
+        本地项目启动脚本处理过请求重定向，当构建之后，请求某一路径是，会出现404的情况，原因是，这是在浏览器的history的基础上创建的，服务在解析请求路径时，
+    会在项目根目录，顺着解析的地址路径寻找页面，而项目并不是这样的目录结构，故会出现找不到页面的情况。不兼容IE9及以下浏览器
+        解决方式：可以通过配置Nginx或通过自建Node服务器来解决，将项目相关请求全部重定向到项目的根目录，入口文件。
+            server {
+            	server_name test.com;
+            	listen 80;
+
+            	root /A/B/C/D/dist;  /*服务器文件目录结构*/
+            	index index.html;
+            	location / {
+                	try_files $uri /index.html;
+              	}
+            }
+        通过配置Nginx，访问任何URI都指向index.html（入口文件），浏览器上的path，会自动被React-router处理，进行无刷新跳转。
+    hashRouter，形如 '/#/routes/route'，实现原理类似于网页的锚定跳转，不需要重新渲染页面，兼容性好。（无法配置服务器相关信息时，选择hashRouter）
+
+需求：
+    配置gulp构建的项目时，使用:
+        低版本babel（gulp-babel）: babel-plugin-transform-runtime + babel-preset-env + babel-runtime 或是 babel-plugin-transform-runtime + babel-preset-env + babel-polyfill;
+        高版本babel（gulp-babel）: @babel/plugin-transform-runtime + @babel/preset-env + @babel/runtime 或是 @babel/plugin-transform-runtime + @babel/preset-env + @babel/polyfill
+    解析ES6语法至ES5并兼容IE或其他厂商浏览器时，babel-runtime & babel-polyfill和 @babel/runtime & @babel/polyfill的区别。
+解决方式：
+    详情见：https://blog.csdn.net/zwkkkk1/article/details/89143424
+    babel-polyfill会模拟一个ES5的环境，会转化syntax和所有的prototype拓展方法以及promise、Generator、Class等，但是不能按需引入，使打包后文件相对较大；并且会污染子模块的局部作用域，严重的可能会导致冲突
+    babel-runtime是按需加载，但是一些原型拓展程序不会被编译，例如Array.prototype.includes/findIndex等，其静态方法会被编译，如Array.from等
+    babel-polyfill 是在原有的JS内置对象及方法上做向后兼容的处理，比如说ES5里面的 Object 是没有自带 assign 方法的，那么你加载了babel-polyfill 之后，它就给 Object 扩展了一个 assign 方法，这样你就可以直接使用 Object.assign(obj1, obj2) 了
+    而 babel-runtime 的方式则需要babel作为工具，在转换的过程中，检测到你使用了 Object.assign，而且你的 .babelrc 配置中需要对其做ES5兼容处理，那么结合 babel-plugin-transform-runtime，在该JS文件中引入 Object.assign 的Polyfill，这样也能实现 Object.assign 的功能，但是你无法在 Object 上直接找到 assign 的方法
