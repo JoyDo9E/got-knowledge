@@ -1,0 +1,45 @@
+1.浏览器（非合并，优化状态下），每一个tab页即为一个进程，每个进程又包含以下线程：
+    1.GUI渲染进程；
+    2.js引擎线程（与GUI渲染进程互斥，即加载js时，页面会停止渲染）；
+    3.事件触发线程；
+    4.定时器触发线程（setTimeout,setInterval）；
+    5.异步请求线程
+2.项目中的worker系列：
+    web worker:
+        创建javascript多线程，在主线程运行的同时，web worker在后台运行，互不干扰；
+        到完成计算任务后，将结果返回主线程（适用于计算密集型、高延迟任务）；
+        一旦新建成功，始终运行，耗费资源；
+        受到以下限制：
+            1.同源：worker运行脚本需与主线程脚本同源；
+            2.DOM：无法获取DOM对象（document、window、parent...）可访问（navigator，location）；
+            3.通信：只能通过消息机制与主线程通信；
+                主线程：
+                    var worker = new Worker('来源于网络的脚本');
+                    worker.postMessage('hello worker');
+                worker:
+                    var worker = new Worker('来源于网络的脚本');
+                    worker.onmessage = function (e) {...};
+
+            4.脚本：无法使用alert和confirm但可以使用ajax
+            5.文件：无法读取本地文件
+    service workers: (相当于本地mock一样，会在无网络环境下，阻塞请求，返回缓存数据)
+
+        主线程中：
+            navigator.serviceWorker.register('/service-worker.js');
+        worker中:
+            /* service-worker.js */
+
+            // Install （安装）
+            self.addEventListener('install', function(event) {
+                // ...
+            });
+
+            // Activate （激活）
+            self.addEventListener('activate', function(event) {
+                // ...
+            });
+
+            // 监听主文档中的网络请求
+            self.addEventListener('fetch', function(event) {
+                // ...
+            });

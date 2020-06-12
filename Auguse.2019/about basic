@@ -88,3 +88,51 @@
      {color: 'blue', shadowSize: 2},
      'Click Me'
    )
+20.定义/修改对象的属性或者方法时，可以用：
+    Object.defineProperty(object: object, key: string, attributes: {enumerable: boolean, writable: boolean, configurable: boolean, value: any，(引用类型无value和wraitable属性，有set和get)})
+    Object.defineProperties(obj: Object, props)
+当使用字面向量法定义一个对象的某个属性的setter和getter属性时，可以简写为：
+    var Example = {
+        name: 'pt',
+        age: undefined,
+        get age () {
+            return 16;
+        },
+        set age(age) {
+            this.age = age
+        }
+    }
+21.react中，多层传递props时（层层传递，只有最底层的组件使用改props的数据时），
+    可考虑在最顶层组件处，定义一个上下文React.createContext：
+        // Context lets us pass a value deep into the component tree
+        // without explicitly threading it through every component.
+        // Create a context for the current theme (with "light" as the default).
+        const ThemeContext = React.createContext('light');
+
+        class App extends React.Component {
+          render() {
+            // Use a Provider to pass the current theme to the tree below.
+            // Any component can read it, no matter how deep it is.
+            // In this example, we're passing "dark" as the current value.
+            return (
+              <ThemeContext.Provider value="dark">
+                <Toolbar />
+              </ThemeContext.Provider>
+            );
+          }
+        }
+    再在最底层组件处使用：
+        class ThemedButton extends React.Component {
+          // Assign a contextType to read the current theme context.
+          // React will find the closest theme Provider above and use its value.
+          // In this example, the current theme is "dark".
+          static contextType = ThemeContext;
+          render() {
+            return <Button theme={this.context} />;
+          }
+        }
+
+    综上：
+    const ThemeContext = React.createContext('light');
+    <ThemeContext.Provider value={theme}></ ThemeContext.Provider>  发布者  传入数据
+    <ThemeContext.Consumer>{theme => <Component />}</ ThemeContext.Provider>  订阅者  读取数据

@@ -48,3 +48,77 @@
 
         函数式组件声明：
         const List: React.FC<IProps> = props => null
+9.接口继承：
+    interface Shape {
+        color: string;
+    }
+    interface PenStroke {
+        penWidth: number;
+    }
+    // todo 继承单个接口
+    interface Square extends Shape {
+        sideLength: number;
+    }
+    // todo 继承多个接口
+    interface Square extends Shape, PenStroke {
+        sideLength: number;
+    }
+    涉及到“方法”的接口类型继承，需要重写“方法”才能实现的，用implements继承：
+        interface ClockInterface {
+            currentTime: Date;
+            setTime(d: Date);
+        }
+        class Clock implements ClockInterface {
+            currentTime: Date;
+            // todo 重写了settime方法
+            setTime(d: Date) {
+                this.currentTime = d;
+            }
+            constructor(h: number, m: number) { }
+        }
+10.函数传参：
+    // 在TypeScript里我们可以在参数名旁使用 ?实现可选参数的功能
+        function buildName(firstName: string, lastName?: string) {
+            ...
+        }
+    // 在TypeScript里，你可以把所有参数收集到一个变量里 todo  多态
+    function buildName(firstName: string, ...restOfName: string[]) {
+      return firstName + " " + restOfName.join(" ");
+    }
+11.type和interface的区别，详情见 https://juejin.im/post/5c2723635188252d1d34dc7d
+12.声明需要调用this的函数的参数类型时，需要在传入参数中显式地声明this的类型：
+    interface Card {
+        suit: string;
+        card: number;
+    }
+    interface Deck {
+        suits: string[];
+        cards: number[];
+        createCardPicker(this: Deck): () => Card;
+    }
+    如果this在回调函数中（未使用this指针的情况下），可声明this: void
+13.常识：（文件类型相关）
+    .js === .ts   .jsx === .tsx
+    .ts是原来的js文件，.d.ts是声明文件
+
+14.相关的react type声明以及其区别：
+    使用typeof获取对象实例或者值得类型~
+    // TODO React.Node
+    React.Node：
+        can be null, a boolean, a number, a string, a React element, or an array of any of those types recursively.声明类型诸如div span label等等标签；
+        大致与React.ChildrenArray<T>类似：React.Node === React.ChildrenArray<void | null | boolean | string | number | React.Element<any>>;
+    // TODO React.Element & React.Element<typeof Component>
+    React.Element:
+        the type for the value of a JSX element, React.Element<typeof Component> is also the return type of React.createElement()
+        const element: React.Element<'div'> = <div />; 用于声明JSX 标签
+    // TODO React.ChildrenArray<T>
+    React.ChildrenArray<T>:
+        A React children array can be a single value or an array nested to any level 结合React.Children使用，用于声明react的children的类型
+        const children: React.ChildrenArray<number> = 42; || const children: React.ChildrenArray<number> = [[1, 2], 3, [4, 5]];
+    // TODO React.AbstractComponent<Config, Instance>
+    React.AbstractComponent<Config, Instance>:
+        most useful for writing HOCs and library definitions,用于声明HOC组件常用；
+    // TODO React.ComponentType<Props>
+    React.ComponentType<Props>:
+        a union of a class component or a stateless functional component.(一个类组件和无状态组件的联合类型)，适用于声明receive or return React components或者HOC
+

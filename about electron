@@ -1,0 +1,23 @@
+1.主进程和渲染进程：
+    主进程：使用BrowserWindow实例化创建页面，管理所有的web页面以及其对应的渲染进程，可调用GUI和原生API以及nodejs；
+    渲染进程：独立的，只关心其运行的web页面，无法调用GUI、原生API以及nodejs；只能通过与主进程实现通信，实现GUI/API/NODEJS封装方法的调用；
+    进程间通信：ipcRenderer / ipcMain 进行ipc通信或者使用remote模块进行 rpc 方式通信。 // todo ipc & rpc
+    remote： Electron通过remote模块暴露一些通常只能在主进程中获取的API
+        // 在渲染进程中实例化BrowserWindow
+        const { remote } = require('electron')
+        const { BrowserWindow } = remote
+        const win = new BrowserWindow()
+2.优化方式：
+    对于长期占用CPU的任务，使用work threads，并考虑将他们移到Browser Window或生成一个专用进程；
+    尽可能避免使用同步IPC和remote模块，（使用remote会场容易不知情的阻塞UI线程）；
+    尽量使用异步方式执行相关操作（针对nodejs中的同时具有同、异步的操作，优先使用异步操作）。
+    （requestIdleCallback(callback[, option]) / cancelIdleCallback(id)允许开发者将函数排队为在进程进入空闲期后立刻执行。）
+    避免从互联网中获取几乎不变化的资源，如果它可以轻松地与你的应用程序捆绑起来。(图片、js库尽量引入项目中以静态资源方式使用)
+3.渲染进程引入node：
+    new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true // 暴露node给渲染进程页面（前端）
+        }
+    });
+4.渲染进程引入electron模块报错：
+    详情见  https://blog.csdn.net/qq_38333496/article/details/102474532
