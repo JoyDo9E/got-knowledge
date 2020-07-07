@@ -26,3 +26,9 @@
             return f;
           }
 3.MutationObserver接口提供了监视对DOM树所做更改的能力。（可以通过次api实现监听某一dom元素变化的目的） # https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver
+// todo gitlab ssh
+4.gitlab添加ssh公钥之后，需要执行以下命令行，以保存操作密码：
+
+    eval `ssh-agent -s`
+    ssh-add
+详见：https://stackoverflow.com/questions/17846529/could-not-open-a-connection-to-your-authentication-agent

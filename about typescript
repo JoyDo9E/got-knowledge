@@ -122,3 +122,5 @@
     React.ComponentType<Props>:
         a union of a class component or a stateless functional component.(一个类组件和无状态组件的联合类型)，适用于声明receive or return React components或者HOC
 
+15.
+
