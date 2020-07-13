@@ -122,5 +122,30 @@
     React.ComponentType<Props>:
         a union of a class component or a stateless functional component.(一个类组件和无状态组件的联合类型)，适用于声明receive or return React components或者HOC
 
-15.
+15.extends和implements的区别：
+    In your example you treat your Person class once as a class when you extend it and once as an interface when you implement it.
+    Your code:
+    // todo Your code:
+    class Person {
+        name: string;
+        age: number;
+    }
+    class Child  extends Person {}
+    class Man implements Person {}
+    // todo error notice
+    Has a compilation error saying:
+
+    Class 'Man' incorrectly implements interface 'Person'.
+    Property 'name' is missing in type 'Man'.
+
+    And that's because interfaces lack implementation.
+    So if you implement a class then you only take its "contract" without the implementation, so you'll need to do this:
+    // todo correct mistake
+    class NoErrorMan implements Person {
+        name: string;
+        age: number;
+    }
+    综上（you treat your Person class once as a class when you extend it and once as an interface when you implement it）：
+        extends用于声明一个对象（Object类）时的类型继承，无需实现；
+        implements用于声明一个类（class类）时的类型继承，需要实现内部的属性和方法。
 

@@ -31,4 +31,4 @@
 
     eval `ssh-agent -s`
     ssh-add
-详见：https://stackoverflow.com/questions/17846529/could-not-open-a-connection-to-your-authentication-agent
+详见：https://stackoverflow.com/questions/17846529/could-not-open-a-connection-to-your-authentication-agent；
