@@ -43,3 +43,31 @@
     13).useMemo(fn, [依赖的state]);由于函数式组件无法通过shouldComponentUpdate精确控制渲染行为,故使用useMemo来控制，只有当依赖的state值改变时，才会出发fn函数的执行
     14).useCallback传入一个内联回调和一个输入数组，返回一个带有记忆的函数，只有输入数组中其中一个值变化才会更改。useCallback(fn, inputs) 等价于 useMemo(() => fn, inputs)。
     15).useMemo/useCallback在组件初始化时就会执行，而useEffect在render()之后才会执行，如果其依赖为'[]'，则表示只会执行一次。
+    16).获取 DOM 节点的位置或是大小的基本方式是使用 callback ref。每当 ref 被附加到一个另一个节点，React 就会调用 callback。这里有一个 小 demo:
+        function MeasureExample() {
+          const [height, setHeight] = useState(0);
+
+          const measuredRef = useCallback(node => {
+            if (node !== null) {
+              setHeight(node.getBoundingClientRect().height);
+            }
+          }, []);
+          return (
+            <>
+              <h1 ref={measuredRef}>Hello, world</h1>
+              <h2>The above header is {Math.round(height)}px tall</h2>
+            </>
+          );
+        }
+        在这个案例中，我们没有选择使用 useRef，因为当 ref 是一个对象时它并不会把当前 ref 的值的 变化 通知到我们。使用 callback ref 可以确保 即便子组件延迟显示被测量的节点 (比如为了响应一次点击)，我们依然能够在父组件接收到相关的信息，以便更新测量结果。
+
+        可以将此逻辑抽取出来，自定义hook
+        function useClientRect() {
+          const [rect, setRect] = useState(null);
+          const ref = useCallback(node => {
+            if (node !== null) {
+              setRect(node.getBoundingClientRect());
+            }
+          }, []);
+          return [rect, ref];
+        }

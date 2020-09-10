@@ -43,3 +43,83 @@
             self.addEventListener('fetch', function(event) {
                 // ...
             });
+
+3.class:
+    (1).静态公共方法, static: 调用静态方法不需要实例化该类，但不能通过一个类实例调用静态方法。静态方法通常用于为一个应用程序创建工具函数。
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            static distance(a, b) {
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                return Math.hypot(dx, dy);
+            }
+        }
+        const p1 = new Point(5, 5);
+        const p2 = new Point(10, 10);
+        console.log(Point.distance(p1, p2));
+    (2).静态公有字段：创建一个只在每个类里面只存在一份，而不会存在于你创建的每个类的实例中的属性
+        class ClassWithStaticField {
+            static staticField = 'super';
+            static moreStaticField = this.staticField + 'more';    // 同一类中，可通过this["公有字段名"]访问公有字段
+            static staticFn () { console.log('staticFn'); return 'super'; }
+        }
+        class SubClassWithStaticField extends ClassWithStaticField {
+            static subStaticField = 'sub';
+            console.log(super);                       //  "super"是指向父类的指针
+            static superData = super.staticFn();      //  继承父类的子类，可通过super['父类中的静态公有方法名']访问父类中的静态公有方法
+        }
+        const sub = new SubClassWithStaticField();
+        sub.subStaticField // "undefined"
+        SubClassWithStaticField.subStaticField // 'sub'
+        SubClassWithStaticField.staticField // 'super' 
+        特性：实例不可访问，只存在于类；可通过继承链（原型链）访问父类静态公有字段
+    (3).公共实例方法 & 公共字段：
+        class ClassWithInstanceField {
+            instanceField = 'instance field';
+        }
+        与静态共有字段 & 静态方法的区别在于，实例是否可访问
+    (4).成员方法，只能被实例调用，以及子实例调用，不能被构造函数或者类直接调用
+        class Person {
+            arr: [1, 2], // 引用类型的值每个实例单独clone一份，互不影响
+            sayTime () {console.log(Date.now())},
+            constructor (name, age) {
+                this.name = name;
+                this.age = age;
+            }
+        }
+        var peter = new Person('peter', 27);
+        peter.arr // [1, 2]
+        class WhiteMan extends Person {
+            constructor (name, age) {
+                super(name, age) // 必须运行super，子类本身无this，需运行super继承超类的this
+            }
+        }
+        var tom = new WhiteMan('tom', 25);
+        tom.arr // [1, 2]
+        tom.arr.push(3);
+        tom.arr // [1, 2, 3]
+        peter.arr // [1, 2]
+
+
+4.IE9及以下版本，XMLHttpRequest 不支持跨域请求，XDomainRequest 虽然支持跨域，却又不支持 cookie 传递  // IE9以下请求需要使用jsonp否则ajax只会执行error回调
+5.babel转移原理：
+    (1).babelon.parse方法将js的词法、语法解析成为AST（抽象语法树：https://astexplorer.net/）;
+    (2).babel-traverse（主要用于插件中）或者babel-generator,结合babel-core(babel转译API)将AST抽象语法树编译为js代码;
+  插件介绍：
+    babel-polyfill：JS标准新增的原生对象和API的shim，实现上仅仅是core-js和regenerator-runtime两个包的封装
+    babel-runtime：功能类似babel-polyfill，一般用于library或plugin中，因为它不会污染全局作用域
+---------------------------------------------------------------------------------------------------
+    es20xx的preset只转译该年份批准的标准，而env则代指最新的标准，包括了latest和es20xx各年份
+    另外，还有 stage-0到stage-4的标准成形之前的各个阶段，这些都是实验版的preset，建议不要使用。
+6.ts全局变量声明，当一个文件没有使用模块，即没有使用es6的export等关键字，那么文件内所有的定义都是全局的；通常在.d.ts文件中定义全局变量类型：
+    // global.d.ts
+    1.声明全局变量
+        declare const name: string
+    2.声明全局库
+        declare module Foo {
+            export default x
+        }
+7.ts提供了Number, Boolean, Array, String, Null, Undefined, Never, Tuple(元组，每个位置类型固定的数组), Enum(枚举类型), Any, Void, Object.
