@@ -123,3 +123,38 @@
             export default x
         }
 7.ts提供了Number, Boolean, Array, String, Null, Undefined, Never, Tuple(元组，每个位置类型固定的数组), Enum(枚举类型), Any, Void, Object.
+8.通过new关键字实例化一个构造函数，会将构造函数的this设置成为一个全新的空对象
+    function Foo () {
+        console.log(this.bar);
+    }
+    var bar = 'bar';
+    Foo(); // 'bar'
+    new Foo(); // undefined
+9.ES6语法和新增特性转化为ES5：polyfilling & (transpeling【转换】 + compiling【编译】) 括号内内容主要针对语法转义或新增的api，如const、flat等；
+
+10.考虑如下：
+    /** let关键字 */
+    for (let i=0; i<10; i++){
+        setTimeout(function () {console.log(i);}, i*1000);
+    }
+    /** var关键字 */
+    for (var i=0; i<10; i++){
+        setTimeout(function () {console.log(i);}, i*1000);
+    }
+    for 循环头部的 let i 不只为 for 循环本身声明了一个 i，而是为循环的每一次迭代都重新声明了一个新的 i。这意味着 loop 迭代内部创建的闭包封闭的是每次迭代中的变量，就像期望的那样。
+    var关键字的情况下，相当于外层作用域只有一个i，这个i被闭包封闭进去，而不是每一层循环都有一个全新的i。
+
+11.for...of的等价代码
+    var a = ["a","b","c","d","e"]; 
+    for (var i of a) {
+        console.log(i);
+    }
+    
+    ==>
+
+    for (var val, ret, it = a[Symbol.iterator](); 
+        (ret = it.next()) && !ret.done; 
+    ) { 
+        val = ret.value; 
+        console.log( val ); 
+    }
