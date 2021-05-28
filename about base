@@ -105,7 +105,7 @@
 
 
 4.IE9及以下版本，XMLHttpRequest 不支持跨域请求，XDomainRequest 虽然支持跨域，却又不支持 cookie 传递  // IE9以下请求需要使用jsonp否则ajax只会执行error回调
-5.babel转移原理：
+5.babel转义原理：
     (1).babelon.parse方法将js的词法、语法解析成为AST（抽象语法树：https://astexplorer.net/）;
     (2).babel-traverse（主要用于插件中）或者babel-generator,结合babel-core(babel转译API)将AST抽象语法树编译为js代码;
   插件介绍：
@@ -158,3 +158,35 @@
         val = ret.value; 
         console.log( val ); 
     }
+
+12. 图片保留宽高比，且自动填充满父元素：
+    object-fit: cover;
+    另外还可设置图片在父元素中的位置，类似于background-position属性：
+    object-position: 50% 100%;
+
+13. 滚动过程中，每次停留都会侦测是否处于子元素的中部，若不是则自动滚动补足
+    父元素：
+        overflow: auto;
+        scroll-snap-type: x mandatory;
+    子元素：
+        scroll-sanp-align: center; // 保持滚动停留在子元素中部
+
+14.可以使用window.requestIdleCallback在系统空闲期间，调用事件循环遍历或者低优先级的函数。
+   使用window.cancelIdleCallback取消绑定，结束回调
+
+15.函数柯里化：使函数从一次调用传入多个参数变成多次调用每次传一个参数。
+  function curry(fn) {
+    let judge = (...args) => {
+        if (args.length == fn.length) return fn(...args)
+        return (...arg) => judge(...args, ...arg)
+    }
+    return judge
+  }
+  eg:
+    function add(a, b, c) {
+      return a + b + c
+    }
+    add(1, 2, 3)
+    let addCurry = curry(add)
+    addCurry(1)(2)(3)
+

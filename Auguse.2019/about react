@@ -83,3 +83,7 @@ react-router-dom 包含 Link Route Switch BrowserRouter：（详细参见react-r
         可以通过render函数（方便的在线渲染和包装）或者component传入组件
     Switch 只渲染第一个匹配到的<路由组件>或<重定向组件>。
 
+
+渲染阶段：生成一颗虚拟dom树；           异常捕获：static getDerivedStateFromError(err){}
+提交阶段：虚拟dom树替换成真实的dom树    异常捕获：ComponentDidCatch(error, info){}
+

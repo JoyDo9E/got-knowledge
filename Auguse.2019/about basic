@@ -149,3 +149,94 @@
 
    逻辑空赋值运算符（左侧值为nullish时，把右侧值赋给左侧）
     (null || undefined) ??= value
+
+23.Boolean相当于是个函数：Boolean(0); // false
+  Essentially, writing:
+    arr.filter(Boolean)
+  is the same as writing:
+    arr.filter( function(x) { return Boolean(x); }); 
+  
+24.React.useCallback与lodash.throttle联用时，会提示“React Hook useCallback received a function whose dependencies are unknown. Pass an inline function instead  react-hooks/exhaustive-deps”
+需要改变写法：
+  React.useCallback(throttle(..., 1000), [*]) ===>>> React.useMemo(() => throttle(..., 1000), [*])
+
+25.使用react-router-dom进行跨路由跳转时（如：从/one/onesub跳转/three/threesub时），出现url变化，但是页面渲染异常的问题，解决办法：系多次使用BrowserRouter或者
+HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由组件）；去掉多层嵌套，防止路由信息丢失。
+
+
+26.React.portals使用场景：某一组件，在React组件树中属于一组件的子组件（方便状态管理），但在真实Dom上属于另一元素的子元素（方便层级和展示管理）
+  // React 并*没有*创建一个新的 div。它只是把子元素渲染到 `domNode` 中。
+  // `domNode` 是一个可以在任何位置的有效 DOM 节点。
+  ReactDOM.createPortal(this.props.children, domNode);
+
+27.Typescript 3.0新增unknown类型，
+  任何类型都可赋值给unknown类型（即 const a: unknown = b: (number, string, boolean...)）;
+  但unknown类型只能赋值给any & unknown类型的参数（即 const a: (unknown & any) = b: unknown）;
+  主要用于解决  防止声明any类型的参数失去类型检查，同时可赋值任何类型 的情况：
+    对 unknown 类型执行方法调用或者属性读取之类的操作，都必须先使用条件控制流或者类型断言来收窄 unknown 到指定的类型：
+    // any 类型
+    const doSomething = (val: any) => {
+      // 没有断言，都不报错
+      val();  
+      val.foo.bar; 
+    }
+
+    const doSomething = (val: unknown) => {
+      if (typeof val === 'function') {
+        val(); // 条件分析，类型收窄到 Function，调用不报错；
+      }
+      // 没有断言，报错
+      val.foo.bar;
+      x[0];
+      x();
+    }
+
+28. typescript中，数组类型，enum（枚举）类型，Tuple（元组）类型的区别：
+  数组类型：number[] | Array<number> 以及 Tuple类型：a: [number, string, boolean] 都是针对数组数据进行类型声明 [备注：js弱类型语言数组中可存入任何类型的元素，元组用以声明固定位置固定类型]
+  enum类型是对对象进行类型声明(并非类型声明，而是类型声明 + 赋值，可直接输出为一对象) enum x: {Up, Down, Left, Right}, 且带有自增性，即当前声明：x.Up // 0， x.Down // 1
+
+29."在 React 应用中，当某个组件的状态发生变化时，它会以该组件为根，重新渲染整个组件子树"
+
+30.document.visibilityState可用于判断页面状态(>=IE 10)；"hidden" | "visibile" | "prerender"(渲染中)
+
+31. 在React中，如果是由React引发的事件处理（比如通过onClick引发的事件处理），调用setState不会同步更新this.state，除此之外的setState调用会同步执行this.state 。所谓“除此之外”，指的是绕过React通过addEventListener直接添加的事件处理函数，还有通过setTimeout/setInterval产生的异步调用。
+原因： 在React的setState函数实现中，会根据一个变量isBatchingUpdates判断是直接更新this.state还是放到队列中回头再说，而isBatchingUpdates默认是false，也就表示setState会同步更新this.state，但是，有一个函数batchedUpdates，这个函数会把isBatchingUpdates修改为true，而当React在调用事件处理函数之前就会调用这个batchedUpdates，造成的后果，就是由React控制的事件处理过程setState不会同步更新this.state。
+注意： setState的“异步”并不是说内部由异步代码实现，其实本身执行的过程和代码都是同步的，只是合成事件和钩子函数的调用顺序在更新之前，导致在合成事件和钩子函数中没法立马拿到更新后的值，形式了所谓的“异步”，当然可以通过第二个参数 setState(partialState, callback) 中的callback拿到更新后的结果。
+详细请看 深入 setState 机制(https://github.com/sisterAn/blog/issues/26)
+
+32.使用queueMicrotask可创建一个微任务：
+    queueMicrotask(() => {//...微任务函数体})
+  微任务不在其所处的函数退出时，而是在主程序退出时被执行：
+    let callback = () => log("Regular timeout callback has run");
+    let urgentCallback = () => log("*** Oh noes! An urgent callback has run!");
+    let doWork = () => {
+      let result = 1;
+      queueMicrotask(urgentCallback);
+      for (let i=2; i<=10; i++) {
+        result *= i;
+      }
+      return result;
+    };
+    log("Main program started");
+    setTimeout(callback, 0);
+    log(`10! equals ${doWork()}`);
+    log("Main program exiting");
+    输出：
+      Main program started
+      10! equals 3628800
+      Main program exiting
+      *** Oh noes! An urgent callback has run!
+      Regular timeout callback has run
+
+33.项目中声明了alia，ts仍然报错：找不到模块“**”或其相应的类型声明。
+解决：  在tsconfig.json中声明paths属性（模块名到基于 baseUrl的路径映射的列表。查看 模块解析文档了解详情。）https://www.tslang.cn/docs/handbook/compiler-options.html
+        向typescript编译器解释alia，防止报错。
+        如：paths: { '@': ['src'] }
+
+34.Dom Diff图解：https://github.com/ascoders/weekly/blob/master/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF/190.%E7%B2%BE%E8%AF%BB%E3%80%8ADOM%20diff%20%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3%E3%80%8B.md
+
+35.vue中可通过provide & inject跨层级传递 & 接收数据
+  祖先组件： provide: { message: 'data' }
+  后代组件： inject: ['message']
+
+36. display: table;(父元素) & display: table-cell(子元素) 可适用于多行文本（多行行内元素）垂直居中的问题。
