@@ -1,93 +1,93 @@
-Node.jsÏà¹Ø (ÃüÁîÐÐÖÐ£¬Ê¹ÓÃ node --use_strict ÃüÁîÖ´ÐÐÑÏ¸ñÄ£Ê½)
-ÔÚ macOS ºÍ Linux ÉÏ»áÊ¹ÓÃ argv[0] µÄÖµ×÷Îª½ø³ÌµÄ±êÌâ£¬¶øÔÚ Windows ºÍ SunOS ÉÏÔòÊ¹ÓÃ command ×÷Îª±êÌâ
-1.¶ÏÑÔ£º
-(1)Ìá¹©ÁË¶ÏÑÔ²âÊÔµÄº¯Êý£¬ÓÃÓÚ²âÊÔ²»±äÊ½¡£assertÄ£¿éÅ×³öµÄËùÓÐ´íÎó¶¼ÊÇnew assert.AssertionError(options)µÄÊµÀý
-	message <string> Èç¹ûÓÐÖµ£¬Ôò´íÎóÐÅÏ¢»á±»ÉèÎª¸ÃÖµ¡£
-	actual <any> ´íÎóÊµÀýµÄ actual ÊôÐÔ»á±»ÉèÎª¸ÃÖµ¡£ ÓÃÓÚ actual µÄ´íÎóÊäÈë£¬ÀýÈçÊ¹ÓÃ assert.strictEqual()¡£
-	expected <any> ´íÎóÊµÀýµÄ expected ÊôÐÔ»á±»ÉèÎª¸ÃÖµ¡£ ÓÃÓÚ expected µÄ´íÎóÊäÈë£¬ÀýÈçÊ¹ÓÃ assert.strictEqual()¡£
-	operator <string> ´íÎóÊµÀýµÄ operator ÊôÐÔ»á±»ÉèÎª¸ÃÖµ¡£ ÓÃÓÚ±íÃ÷±È½ÏÊ±Ê¹ÓÃµÄÊÇÄÄ¸ö²Ù×÷£¨»ò´¥·¢´íÎóµÄÊÇÄÄ¸ö¶ÏÑÔº¯Êý£©¡£
-	stackStartFn <Function> Èç¹ûÓÐÖµ£¬ÔòÓÉÌá¹©µÄº¯ÊýÉú³É¶ÑÕ»×Ù¼£¡£
-(2)assert(value [, message])µÈ¼ÛÓÚ assert.ok(value [, message])  ÕæÖµÅÐ¶Ï   ¼ì²âvalueµÄÖµÊÇ·ñÎªtrue(°üº¬ÒþÊ½×ª»»)£»
-(3)assert.deepEqual(actual, expect [, message])   ÅÐ¶ÏÁ½ÖµÊÇ·ñÍêÈ«ÏàµÈ£»£¨²¢·ÇÈ«µÈ£¬°üº¬ÒþÊ½×ª»»£©£»assert.deepStrictEqual(actual, expect [, message])  ÅÐ¶ÏÁ½ÖµÊÇ·ñÈ«µÈ£»   ¶ÔÓÚ¶ÔÏóÀ´Ëµ Ô­ÐÍ²»Í¬ÔòÁ½Õß²»µÈ  Á½¸öÅÐ¶Ï·½·¨¶¼²»µÈ£»
-   ÓëÖ®Ïà·´µÄ·½·¨ÊÇassetr.notDeepStrictEqual(actual, expect [, message]) Èç¹ûÁ½ÕßÈ«µÈÔòÅ×³öÒì³£
-(4)assert.fail([message])Å×³ö´íÎó   message´ú±í×ÅÒì³£´íÎóÐÅÏ¢¡£
-(5)assert.doesNotReject(asyncFunc/promise, error [, message]) ¼ì²âÒì²½º¯ÊýÊÇ·ñ±»reject   ÓëÖ®Ïà·´µÄ·½·¨ÊÇ  assert.rejects(asyncFunc/Promise, error [, message])   Óëassert.throws(fn [, error ][, message])¶Ô±È  Çø±ðÔÚÓÚºóÕß¼ì²âÒ»°ãº¯Êý  ²»ÄÜ¼ì²âÒì²½º¯Êý
+Node.jsï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½Ê¹ï¿½ï¿½ node --use_strict ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½Ï¸ï¿½Ä£Ê½)
+ï¿½ï¿½ macOS ï¿½ï¿½ Linux ï¿½Ï»ï¿½Ê¹ï¿½ï¿½ argv[0] ï¿½ï¿½Öµï¿½ï¿½Îªï¿½ï¿½ï¿½ÌµÄ±ï¿½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½ Windows ï¿½ï¿½ SunOS ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ command ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½
+1.ï¿½ï¿½ï¿½Ô£ï¿½
+(1)ï¿½á¹©ï¿½Ë¶ï¿½ï¿½Ô²ï¿½ï¿½ÔµÄºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½Ô²ï¿½ï¿½ï¿½Ê½ï¿½ï¿½assertÄ£ï¿½ï¿½ï¿½×³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½new assert.AssertionError(options)ï¿½ï¿½Êµï¿½ï¿½
+	message <string> ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½á±»ï¿½ï¿½Îªï¿½ï¿½Öµï¿½ï¿½
+	actual <any> ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ actual ï¿½ï¿½ï¿½Ô»á±»ï¿½ï¿½Îªï¿½ï¿½Öµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ actual ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ assert.strictEqual()ï¿½ï¿½
+	expected <any> ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ expected ï¿½ï¿½ï¿½Ô»á±»ï¿½ï¿½Îªï¿½ï¿½Öµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ expected ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ assert.strictEqual()ï¿½ï¿½
+	operator <string> ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ operator ï¿½ï¿½ï¿½Ô»á±»ï¿½ï¿½Îªï¿½ï¿½Öµï¿½ï¿½ ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½È½ï¿½Ê±Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò´¥·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	stackStartFn <Function> ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹©ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½Õ»ï¿½Ù¼ï¿½ï¿½ï¿½
+(2)assert(value [, message])ï¿½È¼ï¿½ï¿½ï¿½ assert.ok(value [, message])  ï¿½ï¿½Öµï¿½Ð¶ï¿½   ï¿½ï¿½ï¿½valueï¿½ï¿½Öµï¿½Ç·ï¿½Îªtrue(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½×ªï¿½ï¿½)ï¿½ï¿½
+(3)assert.deepEqual(actual, expect [, message])   ï¿½Ð¶ï¿½ï¿½ï¿½Öµï¿½Ç·ï¿½ï¿½ï¿½È«ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½assert.deepStrictEqual(actual, expect [, message])  ï¿½Ð¶ï¿½ï¿½ï¿½Öµï¿½Ç·ï¿½È«ï¿½È£ï¿½   ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½Ëµ Ô­ï¿½Í²ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ß²ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½
+   ï¿½ï¿½Ö®ï¿½à·´ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½assetr.notDeepStrictEqual(actual, expect [, message]) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½×³ï¿½ï¿½ì³£
+(4)assert.fail([message])ï¿½×³ï¿½ï¿½ï¿½ï¿½ï¿½   messageï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½
+(5)assert.doesNotReject(asyncFunc/promise, error [, message]) ï¿½ï¿½ï¿½ï¿½ì²½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½reject   ï¿½ï¿½Ö®ï¿½à·´ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½  assert.rejects(asyncFunc/Promise, error [, message])   ï¿½ï¿½assert.throws(fn [, error ][, message])ï¿½Ô±ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½ß¼ï¿½ï¿½Ò»ï¿½ãº¯ï¿½ï¿½  ï¿½ï¿½ï¿½Ü¼ï¿½ï¿½ï¿½ì²½ï¿½ï¿½ï¿½ï¿½
 
-¶ÏÑÔÖ÷ÒªÓÃÓÚÔÚÊµ¼ÊµÄº¯Êý£¬¸³Öµ£¬ÅÐ¶ÏÊ±£¬Ïàµ±ÓÚÔ­ÉújsÖÐµÄÏà¹ØÅÐ¶Ï
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ÊµÄºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ð¶ï¿½Ê±ï¿½ï¿½ï¿½àµ±ï¿½ï¿½Ô­ï¿½ï¿½jsï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
 
-2.async_hooksÒì²½¹³×Ó
-     async_hooks »ùÓÚÒ»ÖÖresource£¨×ÊÔ´£©µÄ¸ÅÄî£¬Ò»¸öresource»á´¥·¢ÉÏÃæÌáµ½µÄasync_hooksµÄ»Øµ÷º¯Êý¡£ÕâÖÖresource¿ÉÒÔÊÇTTYWRAP ¡¢SSLCONNECTION »òÕßÈÎºÎÊ¹ÓÃ Embedder API£¨using the Embedder API, users can provide and document their own resource objects. For example, such a resource object could contain the SQL query being executed£¬°üº¬ÆäËû½Å±¾ÓïÑÔµÄÖ´ÐÐÌå£¬·½·¨°üÀ¨£¨£©£© ¶¨ÒåµÄÄÚÈÝ¡££¨ÍøÂç´«ÊäÖÐµÄ×ÊÔ´resource£©;
-1.»ù±¾µ÷ÓÃ¹«Ê½£º
+2.async_hooksï¿½ì²½ï¿½ï¿½ï¿½ï¿½
+     async_hooks ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½resourceï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½î£¬Ò»ï¿½ï¿½resourceï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½áµ½ï¿½ï¿½async_hooksï¿½Ä»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½resourceï¿½ï¿½ï¿½ï¿½ï¿½ï¿½TTYWRAP ï¿½ï¿½SSLCONNECTION ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½Ê¹ï¿½ï¿½ Embedder APIï¿½ï¿½using the Embedder API, users can provide and document their own resource objects. For example, such a resource object could contain the SQL query being executedï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½Ôµï¿½Ö´ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç´«ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ô´resourceï¿½ï¿½;
+1.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½Ê½ï¿½ï¿½
 	var asyncHooks = require('async_hooks');
-	asyncHooks.createHook( callbacks ).enable() / .disable();  enable()·½·¨ÓÃÓÚÆô¶¯¸ú×Ù·½·¨/disable()·½·¨ÓÃÓÚÍ£Ö¹¸ú×Ù·½·¨
-callbacks°üÀ¨ÒÔÏÂ4¸öÉúÃüÖÜÆÚ£º
-	init: fn(asyncId, type, triggerAsyncId, resource)   asyncId±íÊ¾µ±Ç°×ÊÔ´ID£¬ type±íÊ¾µ±Ç°×ÊÔ´ÀàÐÍ£¬ triggerAsyncId±íÊ¾ ´´½¨ ²¢ Ö´ÐÐ ÉÏÏÂÎÄµÄÒì²½×ÊÔ´µÄÎ©Ò»ID£¬resource±íÊ¾µ±Ç°µÄ×ÊÔ´£¬ÓÃÓÚ²é¿´³ö´¥·¢Ô­Òò
-		type°üº¬µ±Ç°×ÊÔ´µÄÀàÐÍ£¬ÓÐ£º
-				FSEVENTWRAP, FSREQWRAP, GETADDRINFOREQWRAP, GETNAMEINFOREQWRAP, HTTPPARSER, JSSTREAM, PIPECONNECTWRAP, PIPEWRAP, PROCESSWRAP, QUERYWRAP, SHUTDOWNWRAP, 						SIGNALWRAP, STATWATCHER, TCPCONNECTWRAP, TCPSERVER, TCPWRAP£¨¿Í»§¶Ë·¢ÆðµÄÐÂÁ¬½Ó£¬·¢ÆðÁ¬½ÓÁ¢¼´´´½¨£¬ happens outside of any JavaScript stack. (An executionAsyncId() of 0 means that it is 				being executed from C++ with no JavaScript stack above it.) £©, TIMERWRAP, TTYWRAP, UDPSENDWRAP, UDPWRAP, WRITEWRAP, ZLIB, SSLCONNECTION, PBKDF2REQUEST, RANDOMBYTESREQUEST, 				TLSWRAP, Timeout, Immediate, TickObject£¬ PROMISE
-	before:fn(asybcId)   Òì²½²Ù×÷³õÊ¼»¯Ö®ºóÖ´ÐÐbeforeÖÜÆÚ·½·¨   ÔÊÐíµ÷ÓÃ0ÖÁN´Î
-	after:fn(asyncId)   beforeÖÜÆÚ·½·¨Íê³ÉÖ®ºóÁ¢¼´µ÷ÓÃafter£¬Èô·¢Éú´íÎó£¬after»áÔÚÅ×³ö´íÎóÖ®ºóÖ´ÐÐ£»
-	destory:fn(asyncId)  ÔÚÓëasyncIdÏà¶ÔÓ¦µÄ×ÊÔ´±»Ïú»Ùºó±»µ÷ÓÃ£¬Ò²»áÔÚ the embedder API emitDestroy().·½·¨µ÷ÓÃÊ±µ÷ÓÃdestroy();
-	promiseResolve: fn(asyncId)   µ±º¯Êý·µ»ØpromiseÇÒ½á¹ûÎªresolveÊ±±»µ÷ÓÃ
-async_hooks.executionAsyncId()  ±íÊ¾µ±Ç°Ö´ÐÐµÄÉÏÏÂÎÄ£¨¹À¼ÆÊÇµ±Ç°µÄÖ´ÐÐ»·¾³ÖÐµÄ×ÊÔ´ID  this£©
-async_hooks.triggerAsyncId()    ·µ»Ø³ö·¢µ±Ç°×ÊÔ´µÄ×ÊÔ´ID
-asyncResource.runInAsyncScope(fn[, thisArg, ...args])  ÓÃÓÚÒì²½×ÊÔ´ÖÐ£¨embedder API£©´¥·¢callbacksµÄbefore¡¢afterÉúÃüÖÜÆÚ·½·¨
-asyncResource.emitDestroy()  ÓÃÓÚÒì²½×ÊÔ´´¥·¢destroy()ÉúÃüÖÜÆÚ·½·¨¡£
+	asyncHooks.createHook( callbacks ).enable() / .disable();  enable()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½/disable()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
+callbacksï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½
+	init: fn(asyncId, type, triggerAsyncId, resource)   asyncIdï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½Ô´IDï¿½ï¿½ typeï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½Ô´ï¿½ï¿½ï¿½Í£ï¿½ triggerAsyncIdï¿½ï¿½Ê¾ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ö´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ì²½ï¿½ï¿½Ô´ï¿½ï¿½Î©Ò»IDï¿½ï¿½resourceï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ú²é¿´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½
+		typeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½Ð£ï¿½
+				FSEVENTWRAP, FSREQWRAP, GETADDRINFOREQWRAP, GETNAMEINFOREQWRAP, HTTPPARSER, JSSTREAM, PIPECONNECTWRAP, PIPEWRAP, PROCESSWRAP, QUERYWRAP, SHUTDOWNWRAP, 						SIGNALWRAP, STATWATCHER, TCPCONNECTWRAP, TCPSERVER, TCPWRAPï¿½ï¿½ï¿½Í»ï¿½ï¿½Ë·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ happens outside of any JavaScript stack. (An executionAsyncId() of 0 means that it is 				being executed from C++ with no JavaScript stack above it.) ï¿½ï¿½, TIMERWRAP, TTYWRAP, UDPSENDWRAP, UDPWRAP, WRITEWRAP, ZLIB, SSLCONNECTION, PBKDF2REQUEST, RANDOMBYTESREQUEST, 				TLSWRAP, Timeout, Immediate, TickObjectï¿½ï¿½ PROMISE
+	before:fn(asybcId)   ï¿½ì²½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ö®ï¿½ï¿½Ö´ï¿½ï¿½beforeï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Nï¿½ï¿½
+	after:fn(asyncId)   beforeï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½afterï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½afterï¿½ï¿½ï¿½ï¿½ï¿½×³ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½Ö´ï¿½Ð£ï¿½
+	destory:fn(asyncId)  ï¿½ï¿½ï¿½ï¿½asyncIdï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ùºó±»µï¿½ï¿½Ã£ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ the embedder API emitDestroy().ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½destroy();
+	promiseResolve: fn(asyncId)   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½promiseï¿½Ò½ï¿½ï¿½ÎªresolveÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+async_hooks.executionAsyncId()  ï¿½ï¿½Ê¾ï¿½ï¿½Ç°Ö´ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½Ç°ï¿½ï¿½Ö´ï¿½Ð»ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ô´ID  thisï¿½ï¿½
+async_hooks.triggerAsyncId()    ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ô´ID
+asyncResource.runInAsyncScope(fn[, thisArg, ...args])  ï¿½ï¿½ï¿½ï¿½ï¿½ì²½ï¿½ï¿½Ô´ï¿½Ð£ï¿½embedder APIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½callbacksï¿½ï¿½beforeï¿½ï¿½afterï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½
+asyncResource.emitDestroy()  ï¿½ï¿½ï¿½ï¿½ï¿½ì²½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½destroy()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½
 
-Òì²½¹³×Ó   async_hooksÖ÷ÒªÓÃÓÚ¼à²â¡¢¸ú×ÙÏà¹ØÍøÂçÇëÇó×ÊÔ´ÐÅÏ¢£¨·¢Æð¡¢Á¬½Ó¡¢¹Ø±ÕµÈ£©
+ï¿½ì²½ï¿½ï¿½ï¿½ï¿½   async_hooksï¿½ï¿½Òªï¿½ï¿½ï¿½Ú¼ï¿½â¡¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½Ø±ÕµÈ£ï¿½
 
-3.child_process ×Ó½ø³ÌÏà¹Ø£¬Ä£ÄâÌá¹©ÑÜÉú×Ó½ø³ÌµÄ¹¦ÄÜ£¬Ö÷ÒªÓÉchild_process.spawn()Ìá¹©£»Node.js µÄ¸¸½ø³ÌÓëÑÜÉúµÄ×Ó½ø³ÌÖ®¼ä»á½¨Á¢ stdin¡¢stdout ºÍ stderr µÄ¹ÜµÀ¡£
-	ÔÚÀà Unix ²Ù×÷ÏµÍ³£¨Unix¡¢ Linux¡¢ macOS£©ÉÏ£¬child_process.execFile() Ð§ÂÊ¸ü¸ß£¬¡¶ÒòÎªËü²»ÐèÒªÑÜÉú shell¡·£»ÔÚ Windows ÉÏ£¬.bat ºÍ .cmd ÎÄ¼þÔÚÃ»ÓÐÖÕ¶ËµÄÇé¿öÏÂÊÇ²»¿ÉÖ´ÐÐµÄ£¬Òò´Ë²»ÄÜÊ¹ÓÃ child_process.execFile() Æô¶¯¡£ ¿ÉÒÔÊ¹ÓÃÉèÖÃÁË shell Ñ¡ÏîµÄ child_process.spawn() / exec() / execFile() / fork() ÑÜÉú cmd.exe ²¢½« .bat »ò .cmd ÎÄ¼þ×÷Îª²ÎÊý´«Èë£¨Ò²¾ÍÊÇ shell Ñ¡ÏîºÍ child_process.exec() Ëù×öµÄ¹¤×÷£©¡£ Èç¹û½Å±¾ÎÄ¼þÃû°üº¬¿Õ¸ñ£¬ÔòÐèÒª¼ÓÉÏË«ÒýºÅ¡£
-	child_process.spawnSync()¡¢child_process.execSync() ºÍ child_process.execFileSync() ÊÇÍ¬²½µÄ(ÉÏÐÐÈý·½·¨µÄÍ¬²½°æ±¾)£¬ÇÒ»á×èÈû Node.js ÊÂ¼þÑ­»·Ö±µ½ÑÜÉúµÄ½ø³ÌÍË³ö¡£ÔÚÓÐÓÃ»§ÊäÈëµÄÇé¿öÏÂ£¬×îºÃ²»Ê¹ÓÃexec·½·¨£¬¶øÊÇÊ¹ÓÃexecFile·½·¨¡£
-	child_process.execFile('command' [,arguments] [,options] [,callback])  command±íÊ¾Ö´ÐÐµÄÃüÁî£¬arguments²ÎÊýÊÇÒ»¸öÊý×é¶ÔÏó, options±íÊ¾ÔËÐÐµÄ»·¾³Ïà¹Ø²ÎÊý£¬ callback(err, stdout, stderr)   ÃüÁî²»ÊÇÖ±½ÓÔÚshellÖÐÔËÐÐ  ½Ïexec()¸ü°²È«£»
-	child_process.exec('command' [,options] [,callback]) ÓÃ»§ÊäÈëµÄÃüÁîÖ±½ÓÔËÐÐÔÚshellÖÐ£¬½ÏÎª²»°²È«;
-	child_process.spawn('command' [,args] [,options])  ·µ»Ø<childProcess>£¬Ã»ÓÐ»Øµ÷º¯Êý£¬Ö»ÄÜÍ¨¹ýdataÊÂ¼þ¼àÌý»ñÈ¡ÔËÐÐµÄ½á¹û£»¡¶ÊôÓÚÒì²½Ö´ÐÐ£¬ÊÊÓÃÓÚ×Ó½ø³Ì³¤Ê±¼äÔËÐÐµÄÇé¿ö¡·
-	<child_process.fork(modulePath [,args] [,options]) ÊÇ child_process.spawn() µÄÒ»¸öÌØÊâÇé¿ö£¬·µ»Ø<childProcess>£¬ÓÃÓÚ×¨ÃÅÑÜÉúÐÂµÄ Node.js ½ø³Ì¡£ ·µ»ØµÄ ChildProcess ÓÐÒ»¸ö¶îÍâµÄÄÚÖÃÍ¨ÐÅÍ¨µÀ£¬ÔÊÐíÏûÏ¢ÔÚ¸¸½ø³ÌºÍ×Ó½ø³ÌÖ®¼äÀ´»Ø´«µÝ modulePath ±íÊ¾×Ó½ø³ÌÐèÒªÔËÐÐµÄ½Å±¾µÄÂ·¾¶¡£>
-	Í¬²½µÄ·½·¨¶¼ÐèÒªµÈ×Ó½ø³ÌÍêÈ«ÍË³öÖ®ºó²Å»á·µ»ØÔËÐÐ½á¹û£¬ÆäÖÐexecSync() / execFileSync()·µ»Ø stdoutµÄ  <Buffer | String>¶ÔÏó£¬spawnSync()·µ»ØÒ»¸ö°üº¬×Ó½ø³ÌÏà¹ØÐÅÏ¢µÄ¶ÔÏó¡£
+3.child_process ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½Ä£ï¿½ï¿½ï¿½á¹©ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ÌµÄ¹ï¿½ï¿½Ü£ï¿½ï¿½ï¿½Òªï¿½ï¿½child_process.spawn()ï¿½á¹©ï¿½ï¿½Node.js ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½á½¨ï¿½ï¿½ stdinï¿½ï¿½stdout ï¿½ï¿½ stderr ï¿½Ä¹Üµï¿½ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½ Unix ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½Unixï¿½ï¿½ Linuxï¿½ï¿½ macOSï¿½ï¿½ï¿½Ï£ï¿½child_process.execFile() Ð§ï¿½Ê¸ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ shellï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Windows ï¿½Ï£ï¿½.bat ï¿½ï¿½ .cmd ï¿½Ä¼ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Õ¶Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½Ö´ï¿½ÐµÄ£ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ child_process.execFile() ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ shell Ñ¡ï¿½ï¿½ï¿½ child_process.spawn() / exec() / execFile() / fork() ï¿½ï¿½ï¿½ï¿½ cmd.exe ï¿½ï¿½ï¿½ï¿½ .bat ï¿½ï¿½ .cmd ï¿½Ä¼ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨Ò²ï¿½ï¿½ï¿½ï¿½ shell Ñ¡ï¿½ï¿½ï¿½ child_process.exec() ï¿½ï¿½ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å±ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¸ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ë«ï¿½ï¿½ï¿½Å¡ï¿½
+	child_process.spawnSync()ï¿½ï¿½child_process.execSync() ï¿½ï¿½ child_process.execFileSync() ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½æ±¾)ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ Node.js ï¿½Â¼ï¿½Ñ­ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½Ã²ï¿½Ê¹ï¿½ï¿½execï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½execFileï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	child_process.execFile('command' [,arguments] [,options] [,callback])  commandï¿½ï¿½Ê¾Ö´ï¿½Ðµï¿½ï¿½ï¿½ï¿½î£¬argumentsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, optionsï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ÐµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½ callback(err, stdout, stderr)   ï¿½ï¿½ï¿½î²»ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½shellï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½exec()ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½
+	child_process.exec('command' [,options] [,callback]) ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½shellï¿½Ð£ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½È«;
+	child_process.spawn('command' [,args] [,options])  ï¿½ï¿½ï¿½ï¿½<childProcess>ï¿½ï¿½Ã»ï¿½Ð»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Í¨ï¿½ï¿½dataï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì²½Ö´ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½Ì³ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	<child_process.fork(modulePath [,args] [,options]) ï¿½ï¿½ child_process.spawn() ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<childProcess>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ Node.js ï¿½ï¿½ï¿½Ì¡ï¿½ ï¿½ï¿½ï¿½Øµï¿½ ChildProcess ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½Ìºï¿½ï¿½Ó½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½ modulePath ï¿½ï¿½Ê¾ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ÐµÄ½Å±ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½>
+	Í¬ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½Ë³ï¿½Ö®ï¿½ï¿½Å»á·µï¿½ï¿½ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½execSync() / execFileSync()ï¿½ï¿½ï¿½ï¿½ stdoutï¿½ï¿½  <Buffer | String>ï¿½ï¿½ï¿½ï¿½spawnSync()ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä¶ï¿½ï¿½ï¿½
 
-ref() / unref()·½·¨ÓÃÓÚÆôÓÃ¡¢Í£Ö¹
+ref() / unref()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¡ï¿½Í£Ö¹
 
-Ò»¸ö¹©jsµÄÇ°¶Ë»òÕßjs·þÎñÆ÷Ö´ÐÐÏµÍ³½Å±¾µÄÀà¡£
+Ò»ï¿½ï¿½ï¿½ï¿½jsï¿½ï¿½Ç°ï¿½Ë»ï¿½ï¿½ï¿½jsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ÏµÍ³ï¿½Å±ï¿½ï¿½ï¿½ï¿½à¡£
 
-4.cluster  ¼¯Èº £¨nodeÓÐ4ÖÖ´´½¨½ø³ÌµÄ·½Ê½ spawn(), exec(), execFile(), fork()£©
-     ¹¤×÷½ø³ÌÓÉchild_process.fork()·½·¨´´½¨£¬Òò´ËËüÃÇ¿ÉÒÔÊ¹ÓÃIPCºÍ¸¸½ø³ÌÍ¨ÐÅ£¬´Ó¶øÊ¹¸÷½ø³Ì½»Ìæ´¦ÀíÁ¬½Ó·þÎñ¡£clusterÖ§³ÖÁ½ÖÖÁ¬½Ó·Ö·¢Ä£Ê½£ºÑ­»··¨£¬Ö÷½ø³Ì¼àÌý¶Ë¿Ú£¬½«Á¬½ÓÑ­»··Ö·¢¸ø¹¤×÷½ø³Ì£»Ö÷½ø³Ì´´½¨¼àÌýsocketºó·¢¸øÏà¹ØµÄ¹¤×÷½ø³Ì£¬ÓÉ¹¤×÷½ø³ÌÖ±½Ó¸ºÔð½ÓÊÜÁ¬½Ó
-workerÀàÏà¹Ø£¨worker¶ÔÏó°üº¬ÁË¹ØÓÚ¹¤×÷½ø³ÌËùÓÐµÄpublicÐÅÏ¢ºÍ·½·¨£©£¨cluster.fork()´´½¨WorkerÀà¹¤×÷½ø³Ì£©£º
-	ÔÚÖ÷½ø³ÌÄÚ¿ÉÒÔÍ¨¹ý cluster.workers À´»ñÈ¡Worker¶ÔÏó£»
-	ÔÚ¹¤×÷½ø³ÌÄÚ¿ÉÒÔÍ¨¹ý cluster.worker À´»ñÈ¡Worker¶ÔÏó£»
+4.cluster  ï¿½ï¿½Èº ï¿½ï¿½nodeï¿½ï¿½4ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌµÄ·ï¿½Ê½ spawn(), exec(), execFile(), fork()ï¿½ï¿½
+     ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½child_process.fork()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½IPCï¿½Í¸ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å£ï¿½ï¿½Ó¶ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½æ´¦ï¿½ï¿½ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½clusterÖ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó·Ö·ï¿½Ä£Ê½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½Ë¿Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½socketï¿½ó·¢¸ï¿½ï¿½ï¿½ØµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+workerï¿½ï¿½ï¿½ï¿½Ø£ï¿½workerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¹ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½publicï¿½ï¿½Ï¢ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½cluster.fork()ï¿½ï¿½ï¿½ï¿½Workerï¿½à¹¤ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ cluster.workers ï¿½ï¿½ï¿½ï¿½È¡Workerï¿½ï¿½ï¿½ï¿½
+	ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ cluster.worker ï¿½ï¿½ï¿½ï¿½È¡Workerï¿½ï¿½ï¿½ï¿½
 
-	disconnect ÊÂ¼þ  Óë cluster.on('disconnect')ÊÂ¼þÏàËÆ£º
-		cluster.fork().on('disconnect', fn)                 // worker disconnectÊ±´¥·¢µÄÊÂ¼þ
-	error ÊÂ¼þ  Óëchild_process.fork()Ìá¹©µÄerrorÊÂ¼þÏàÍ¬
-		ÔÚÒ»¸ö¹¤×÷½ø³ÌÖÐ£¬¿ÉÊ¹ÓÃ process.on('error', fn)
-	exit ÊÂ¼þ  Óëcluster.on('exit')ÊÂ¼þÏàËÆ£¬µ«workerÀàµÄexitÊÂ¼þÕë¶ÔÌØ¶¨µÄ¹¤×÷½ø³Ì
+	disconnect ï¿½Â¼ï¿½  ï¿½ï¿½ cluster.on('disconnect')ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Æ£ï¿½
+		cluster.fork().on('disconnect', fn)                 // worker disconnectÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+	error ï¿½Â¼ï¿½  ï¿½ï¿½child_process.fork()ï¿½á¹©ï¿½ï¿½errorï¿½Â¼ï¿½ï¿½ï¿½Í¬
+		ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ process.on('error', fn)
+	exit ï¿½Â¼ï¿½  ï¿½ï¿½cluster.on('exit')ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ï¿½ï¿½workerï¿½ï¿½ï¿½exitï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		worker.on('exit', (code, signal) => {}) 
-		code ±íÊ¾ÍË³öµÄ´úÂë  numberÀàÐÍ
-		signal ±íÊ¾½ø³Ì±»killµÄÐÅºÅÃû³Æ
-	listening ÊÂ¼þ  Óëcluster.on('listening',fn)ÊÂ¼þÀàËÆ£¬µ«Õë¶ÔÌØ¶¨µÄ¹¤×÷½ø³Ì
+		code ï¿½ï¿½Ê¾ï¿½Ë³ï¿½ï¿½Ä´ï¿½ï¿½ï¿½  numberï¿½ï¿½ï¿½ï¿½
+		signal ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ì±ï¿½killï¿½ï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½
+	listening ï¿½Â¼ï¿½  ï¿½ï¿½cluster.on('listening',fn)ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		worker.on('listening', fn(address) ) // cluster.fork() <=> worker
-	message ÊÂ¼þ Óëcluster.on('message',fn)ÊÂ¼þÀàËÆ£¬Õë¶ÔÌØ¶¨µÄ¹¤×÷½ø³Ì // Ö÷½ø³ÌÓÃ process.on('message', fn(message))È¡µÃ×Ó½ø³Ì·¢ËÍµÄÐÅÏ¢£»×Ó½ø³ÌÊ¹ÓÃ process.send( messageObj )À´·¢ËÍÐÅÏ¢£¨messageObjÎªÐÅÏ¢Ìå¶ÔÏó£©
-	worker.disconnect() ·½·¨  ÔÚÒ»¸ö  ¹¤×÷½ø³Ì  ÄÚµ÷ÓÃ´Ë·½·¨»á¹Ø±ÕËùÓÐµÄserver
+	message ï¿½Â¼ï¿½ ï¿½ï¿½cluster.on('message',fn)ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ process.on('message', fn(message))È¡ï¿½ï¿½ï¿½Ó½ï¿½ï¿½Ì·ï¿½ï¿½Íµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ process.send( messageObj )ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½messageObjÎªï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½
+	worker.disconnect() ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½Ò»ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½Úµï¿½ï¿½Ã´Ë·ï¿½ï¿½ï¿½ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½Ðµï¿½server
 	worker.kill( [,signal] )
 
-worker.id  »ñÈ¡´´½¨¹¤×÷½ø³ÌÊ±±»·ÖÅäµ½Î¨Ò»ID;
-worker.isConnected()  µ±¹¤×÷½ø³ÌÍ¨¹ýIPC¹ÜµÀÁ¬½Óµ½Ö÷½ø³ÌÊ±£¬¸Ã·½·¨·µ»Ø true  ·´Ö®  ·µ»Ø false £¨¹¤×÷½ø³Ì´´½¨Ö®ºó»á×Ô¶¯Á¬½Óµ½ËüµÄÖ÷½ø³Ì fork·½·¨£©
-worker.isDead()  µ±¹¤×÷½ø³Ì±»ÖÕÖ¹Ê±£¨×Ô¶¯ÍË³ö»ò±»·¢ËÍÐÅºÅÊ±£©·µ»Øtrue ·´Ö®·µ»Øfalse
-¡¶ËùÓÐµÄ¹¤×÷½ø³Ì¶¼ÊÇchild_process.fork()À´´´½¨µÄ£¬·µ»ØµÄ¶ÔÏó±»´æ´¢Îª.process¡·
+worker.id  ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½äµ½Î¨Ò»ID;
+worker.isConnected()  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½IPCï¿½Üµï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ true  ï¿½ï¿½Ö®  ï¿½ï¿½ï¿½ï¿½ false ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ forkï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+worker.isDead()  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½ï¿½ï¿½Ö¹Ê±ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½Ë³ï¿½ï¿½ò±»·ï¿½ï¿½ï¿½ï¿½Åºï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½true ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½false
+ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½child_process.fork()ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ØµÄ¶ï¿½ï¿½ó±»´æ´¢Îª.processï¿½ï¿½
 
-clusterÏà¹ØÊÂ¼þÓë·½·¨
-	'disconnect'ÊÂ¼þ µ±¹¤×÷½ø³ÌÓëIPC¹ÜµÀ¶Ï¿ªÊ±´¥·¢´ËÊÂ¼þ£»cluster.on('disconnect',fn(worker))
-	'exit'ÊÂ¼þ  ÈÎºÎÒ»¸ö¹¤×÷½ø³Ì¹Ø±ÕÊ±  clusterÄ£¿é½«³ö·¢´ËÊÂ¼þ cluster.on('exit',fn(worker, code, signal))
-	'fork' ÊÂ¼þ   ÈÎºÎ¹¤×÷½ø³Ì±»´´½¨ fork£¬clusterÄ£¿é½«´¥·¢forkÊÂ¼þ£¬ cluster.on('fork',fn(worker))
-	'listening' ÊÂ¼þ  µ±Ò»¸ö¹¤×÷½ø³Ìµ÷ÓÃlisten()ºó£¬¹¤×÷½ø³ÌÉÏµÄserverºÍcluster¶¼»á´¥·¢listeningÊÂ¼þ  cluster.on('listening', fn(worker, address))
+clusterï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ë·½ï¿½ï¿½
+	'disconnect'ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPCï¿½Üµï¿½ï¿½Ï¿ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½cluster.on('disconnect',fn(worker))
+	'exit'ï¿½Â¼ï¿½  ï¿½Îºï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹Ø±ï¿½Ê±  clusterÄ£ï¿½é½«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ cluster.on('exit',fn(worker, code, signal))
+	'fork' ï¿½Â¼ï¿½   ï¿½ÎºÎ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½ï¿½ï¿½ï¿½ï¿½ forkï¿½ï¿½clusterÄ£ï¿½é½«ï¿½ï¿½ï¿½ï¿½forkï¿½Â¼ï¿½ï¿½ï¿½ cluster.on('fork',fn(worker))
+	'listening' ï¿½Â¼ï¿½  ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½listen()ï¿½ó£¬¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½serverï¿½ï¿½clusterï¿½ï¿½ï¿½á´¥ï¿½ï¿½listeningï¿½Â¼ï¿½  cluster.on('listening', fn(worker, address))
 
-Ö÷Òª×÷ÓÃÊÇÄ£Äâ·Ö²¼Ê½£¬¶àÏß³Ì´¦ÀíIOÃÜ¼¯ÐÍÇëÇóÏà¹Ø£¬ÌáÉýÐÔÄÜ¡£
+ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½Ö²ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì´ï¿½ï¿½ï¿½IOï¿½Ü¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¡ï¿½
 
-5.DNSÓòÃû·þÎñÆ÷Ïà¹Ø  let dns = require('dns')
-	dns.lookup('ÓòÃû', function(err, address, family) {})  Ê¹ÓÃµ×²ã²Ù×÷ÏµÍ³¹¤¾ß½øÐÐÓòÃû½âÎö£¬ÇÒÎÞÐè½øÐÐÍøÂçÍ¨ÐÅ   family·µ»ØÐ­Òé´ØÀàÐÍ   IPV4 / IPV6£»
-	dns.resolve()¡¢dns.resolve*() ÒÔ¼° dns.reverse()  Óë  dns.lookup()  µÄÇø±ðÓë²îÒì£º
-		ÕâÐ©¹¦ÄÜÊµÏÖÓëdns.lookup()½ØÈ»²»Í¬¡£ËüÃÇ²»½öÃ»ÓÐÊ¹ÓÃgetaddrinfo(3)²¢ÇÒÍ¨¹ýÍøÂçÖ´ÐÐDNS²éÑ¯¡£Ê¹ÓÃÒì²½ÍøÂçÍ¨ÐÅ£¬²¢ÇÒÃ»ÓÐÊ¹ÓÃlibuvÏß³Ì³Ø¡£
-		Òò´Ë,ÕâÐ©º¯Êý²»»áÏñÊ¹ÓÃlibuvÏß³Ì³ØµÄdns.lookup()º¯ÊýÒ»Ñù»á¶ÔÆäËü½ø³ÌÓÐ¸ºÃæÓ°Ïì¡£
-		ËüÃÇ²»Ïñdns.lookup()Ò»ÑùÊ¹ÓÃÏàÍ¬µÄÅäÖÃÎÄ¼þ¡£ÀýÈç£¬ËüÃÇ²»»áÊ¹ÓÃÀ´×Ô/etc/hostsÅäÖÃ¡£
+5.DNSï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  let dns = require('dns')
+	dns.lookup('ï¿½ï¿½ï¿½ï¿½', function(err, address, family) {})  Ê¹ï¿½Ãµ×²ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½   familyï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   IPV4 / IPV6ï¿½ï¿½
+	dns.resolve()ï¿½ï¿½dns.resolve*() ï¿½Ô¼ï¿½ dns.reverse()  ï¿½ï¿½  dns.lookup()  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì£º
+		ï¿½ï¿½Ð©ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½dns.lookup()ï¿½ï¿½È»ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ê¹ï¿½ï¿½getaddrinfo(3)ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½DNSï¿½ï¿½Ñ¯ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ì²½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½Å£ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ê¹ï¿½ï¿½libuvï¿½ß³Ì³Ø¡ï¿½
+		ï¿½ï¿½ï¿½,ï¿½ï¿½Ð©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½libuvï¿½ß³Ì³Øµï¿½dns.lookup()ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½Ó°ï¿½ì¡£
+		ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½dns.lookup()Ò»ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç£¬ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/etc/hostsï¿½ï¿½ï¿½Ã¡ï¿½
 	
-	dns.ResolverÀà: dnsµÄ¶ÀÁ¢½âÎö³ÌÐò   const {Resolver} = require('dns')  ==>const Resolver = dns.Resolver;  ¶ÀÁ¢ÓÚÈ«¾ÖÉèÖÃ£¬µ¥¶ÀÉèÖÃÄ³´Î²Ù×÷µÄdns·þÎñÆ÷ÓòÃû¡£
+	dns.Resolverï¿½ï¿½: dnsï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   const {Resolver} = require('dns')  ==>const Resolver = dns.Resolver;  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½dnsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		const resolver = new Resolver();  resolver.setServers(['4,4,4,4']);  resolver.resolve4('zhihu.com', function(err, addresses){})...
 	

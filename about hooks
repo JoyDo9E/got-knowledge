@@ -72,3 +72,7 @@
           return [rect, ref];
         }
     17).useEffect表示：根据依赖变化，并渲染之后执行的生命周期（数据变化且渲染变化之后执行）。
+
+    18).react函数式组件与类式组件的主要区别是，函数式组件捕获了渲染所使用的值，即函数式组件相当于其父组件的一个天然闭包，某一次传入的数据会被函数式组件中的异步函数“记住”，等同于类式组件render方法中执行。
+        详情可见：https://overreacted.io/zh-hans/how-are-function-components-different-from-classes/
+                 https://overreacted.io/zh-hans/making-setinterval-declarative-with-react-hooks/

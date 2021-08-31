@@ -1,0 +1,15 @@
+1.nextjs项目babel问题,当引入的依赖中,存在无法被polyfill的语法或者函数时,处理方法:
+
+adding
+ config.module.rules.push({
+      test: /\.js$/,
+      include: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-syntax-dynamic-import']
+        }
+      }
+    });
+into my next.config.js fixed it by forcing it to also transpile all node_modules

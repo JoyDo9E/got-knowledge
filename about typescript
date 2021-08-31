@@ -18,6 +18,8 @@
         let obj = {} as Object;
         obj.name = 'pt'
         obj.age = 23
+      类型断言还有另一种写法：
+        const a = {} as ParamsObj  <===> const a = <ParamsObj>{}
 4.在某些情况下TypeScript没法确定某些值的类型。 那么TypeScript会使用 any类型代替。
 5.默认地，TypeScript把null和undefined当做属于任何类型。可以使用联合类型。 比如，某值可能为 number或null，你可以声明它的类型为number|null
 6.假设有一个值TypeScript认为可以为null或undefined，但是你更清楚它的类型，你可以使用!后缀。
@@ -48,6 +50,9 @@
 
         函数式组件声明：
         const List: React.FC<IProps> = props => null
+
+
+
 9.接口继承：
     interface Shape {
         color: string;
@@ -59,7 +64,7 @@
     interface Square extends Shape {
         sideLength: number;
     }
-    // todo 继承多个接口
+    // todo 一个接口可以继承多个接口
     interface Square extends Shape, PenStroke {
         sideLength: number;
     }
@@ -76,6 +81,114 @@
             }
             constructor(h: number, m: number) { }
         }
+    
+    《一个类只能继承另一个类而不能实现多继承》，
+      故当需要继承来自多个类的多个方法时，可以把这些方法提出来，结合implements实现接口，再继承，如：
+      人和机器人都能做饭，洗衣
+      interface AbleToDo {
+        // name: string;
+        cook(): void;
+        wash(): void;
+      }
+
+      interface Else {
+        watch(): void
+      }
+
+      class Person implements AbleToDo {
+        readOnly name = 'person'
+        cook () {
+          console.log('person cool');
+        }
+        wash () {
+          console.log('person wash');
+        }
+      }
+
+      // implements可以实现多继承
+      class Robot implements AbleToDo, Else {
+        private name = 'robot'
+        cook () {
+          console.log('robot cool');
+        }
+        wash () {
+          console.log('robot wash');
+        }
+        watch () {
+          console.log('robot watch');
+        }
+      }
+
+      private 修饰符指定的属性或方法只能在本类中使用，即Robot.name，不能继承或在其他地方使用；
+      public 修饰符的属性或者方法是公用的在任何地方都能使用
+      protected 修饰符的属性或者方法只能在本类或者子类中使用
+      static 修饰符修饰的方法或属性为类方法、类属性；父类与子类共有，只能用过类调用，不能通过实例调用
+
+    写一个类的时候，不希望直接使用该类创建实例（即不能被new），可以创建抽象类使其不能被实例化
+    abstract class Robot {
+      constructor(name: string) {
+        this.name = name;
+      }
+      protected name: string;
+      abstract sayName(): void;
+    }
+
+    class Alpha extends Robot {
+      // 继承抽象类的构造器
+      constructor (name: string) {
+        super(name);
+        this.name = name;
+      }
+      // 继承抽象类的方法
+      sayName () {
+        console.log(this.name);
+      }
+    }
+
+    const sub = new Alpha('alpha');
+    sub.sayName()
+
+    传入类型与返沪类型相同，则可使用泛型:
+      function confResolve<T>(params: T): T {
+        return {...params, name: 'abc'};
+      }
+      const newConf = confResolve({
+        name: '13',
+        age: 18
+      });
+      console.log(newConf);
+
+    可以通过继承接口来限制泛型：
+      interface ConfResolveParams {
+        name: string;
+        age: number;
+      }
+
+      function confResolve<T extends ConfResolveParams>(params: T): T {
+        return {...params, name: 'abc'};
+      }
+      const newConf = confResolve({
+        name: '13',
+        age: 18
+      });
+      console.log(newConf);    
+
+    同理，也可在类和接口中使用泛型
+    interface Params<T>{
+      errno: number;
+      data: T;
+      t: number
+    }
+    class Person<T>{
+      constructor(info: T){
+        this.personalInfo = info;
+      }
+    }
+
+
+
+
+
 10.函数传参：
     // 在TypeScript里我们可以在参数名旁使用 ?实现可选参数的功能
         function buildName(firstName: string, lastName?: string) {

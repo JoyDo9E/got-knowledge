@@ -239,4 +239,57 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
   祖先组件： provide: { message: 'data' }
   后代组件： inject: ['message']
 
-36. display: table;(父元素) & display: table-cell(子元素) 可适用于多行文本（多行行内元素）垂直居中的问题。
+36. display: table;(父元素) & display: table-cell(子元素); vertical-align: middle 可适用于多行文本（多行行内元素）垂直居中的问题。
+
+37.display: grid; 详解 -- 新一种多元素的栅格布局(网格布局)，比flex使用的场景更复杂
+  文档：https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout
+  例子：https://codepen.io/Chokcoco/pen/jOVjxjo
+  结合常用的单位：fr  repeat(n(重复次数), width)  
+  以及展示边界裁剪  clip-path: https://developer.mozilla.org/zh-CN/docs/Web/CSS/clip-path
+  shape-outside: 定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装。
+
+38.webpack中的webpackPrefetch和webpackPreload的区别和作用：（https://webpack.docschina.org/guides/code-splitting/#prefetchingpreloading-modules）
+  1.prefetch(预获取)：将来某些导航下可能需要的资源
+    import(/* webpackPrefetch: true */ './path/to/LoginModal.js');
+    这会生成 <link rel="prefetch" href="login-modal-chunk.js"> 并追加到页面头部，指示着浏览器在闲置时间预取 login-modal-chunk.js 文件。
+  
+  2.preload(预加载)：当前导航下可能需要资源
+    import(/* webpackPreload: true */ 'ChartingLibrary');
+    在加载当前路由的同时，通过 <link rel="preload"> 请求 charting-library-chunk。
+
+  3.区别：
+    preload chunk 会在父 chunk 加载时，以并行方式开始加载。prefetch chunk 会在父 chunk 加载结束后开始加载。
+    preload chunk 具有中等优先级，并立即下载。prefetch chunk 在浏览器闲置时下载。
+    preload chunk 会在父 chunk 中立即请求，用于当下时刻。prefetch chunk 会用于未来的某个时刻。
+    浏览器支持程度不同。
+
+39. webpack5配置兼容性处理polyfill，除了babelrc文件配置完毕之外，还需要设置webpack的设置target: ['web', 'es5']
+
+40. 使用css3 counter相关，自动计数
+    body {
+      counter-reset: h3;
+    }
+
+    h3 {
+      counter-increment: h3;
+      display: list-item;
+    }
+
+    h3::marker {
+      display: list-item;
+      content: "✔" counter(h3) " ";
+      color: lightsalmon;
+      font-weight: bold;
+    }
+
+41. 浏览器中microtask & macrotask与node环境中microtask & macrotask的区别：
+    https://mp.weixin.qq.com/s/E0vu7kJLcgDdJRVrAeyEIA
+
+42. 判断元素类型的函数：
+    function getType (x) {
+      return Object.prototype.toString.call(x).slice(8, -1).toLowerCase();
+    }
+
+43. something >>> 0 ： 第一是非 number 转成 number 类型，第二是将 number 转成 Uint32 类型。
+
+44. debounce | throttle | forEach | map | filter | call | bind | apply方法手写？

@@ -190,3 +190,63 @@
     let addCurry = curry(add)
     addCurry(1)(2)(3)
 
+16.改变常规函数（非箭头函数）的this指向
+  (0, Obj.fn)()  等价于  Obj.fn.call(undefined)
+  (0, Obj.fn)(Scoped)  等价于  Obj.fn.call(Scoped)
+
+17.js数组在内存中存储形式：
+  (1).同类型的数据分配一个连续的内存空间，如Array<number>
+  (2).存在非同类型的数据的数组使用hash映射分配内存空间 ---  <数据结构，hash表地址冲突时解决方法？>
+
+18.CSS 命令 font-variant-east-asian: traditional;，可以让网站字体从简体变成繁体。
+
+19.可能嵌入跨源的资源包括：
+  <script src='***' />
+  <link href='*' />
+  <img src='*' />
+  <video> <audio> <object>
+
+20.缓存：强缓存 & 协商缓存
+  强缓存： 
+    Expires(http 1.0): 为服务端返回的数据到期时间。当再次请求时的请求时间小于返回的此时间，则直接使用缓存数据。<现已使用cache-control替代>
+    cache-control(http 1.1): 
+    
+
+21.css触发GPU硬件加速的方式，transform, filter, opacity;
+   操作动画时，最好使用transform & 3d属性：相较于2d属性，3d属性在页面渲染前就会创建出独立的符合图层，用以展示执行动画；而2d在动画开始前才会创建符合图层，这样会触发两次页面的重绘（创建 & 删除）；
+   translate3d 和 translateZ开启GPU硬件加速后可能会导致浏览器频繁闪烁或抖动，解决方法：
+      -webkit-backface-visibility: hidden;
+      -webkit-perspective: 1000;
+  
+22.流量单位转化js原生写法
+  // nBytes表示总的size大小，单位kb
+  let sOutput = nBytes + " bytes";
+  const aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
+  for (nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+    sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
+  }
+
+23.class本质也是function，class是function的语法糖
+  class Person {}; typeof Person === 'function' // true
+
+24.ES5函数式类写法与ES6的class类写法除写法之外的区别：
+  (1).函数式赋值会提升并赋值，但class式只会提升不会赋值（类似于let & const赋值词）；
+    var foo = new Foo('pt'); // ok!
+    function Foo(name) {this.name = name}
+    -------
+    var foo = new Foo('pt') // error!
+    class Foo {
+      constructor(name) {
+        this.name = name;
+      }
+    }
+  (2).class内部会启动严格模式；
+  (3).class的所有方法，包括静态方法和原型方法都是不可枚举的，而函数式相反
+    function Foo () {sayName () {console.log(1)}, sayHi () {console.log('hi')}}
+    console.log(Object.keys(Foo).length) // 2
+  (4).class中的方法无法，无prototype，无[[constructor]]，无法被实例化，即new；
+  (5).class必须用new才能实例化
+  (6).class内部无法重写类名
+  (7).class内部无法重写类名
+
+
