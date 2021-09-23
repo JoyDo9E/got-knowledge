@@ -84,6 +84,47 @@ react-router-dom 包含 Link Route Switch BrowserRouter：（详细参见react-r
     Switch 只渲染第一个匹配到的<路由组件>或<重定向组件>。
 
 
-渲染阶段：生成一颗虚拟dom树；           异常捕获：static getDerivedStateFromError(err){}
-提交阶段：虚拟dom树替换成真实的dom树    异常捕获：ComponentDidCatch(error, info){}
+render阶段： 渲染阶段：生成一颗虚拟dom树；           异常捕获：static getDerivedStateFromError(err){}
+commit阶段： 提交阶段：虚拟dom树替换成真实的dom树    异常捕获：ComponentDidCatch(error, info){}
+
+----------------------------
+
+React致力于践行“构建快速响应的大型web程序”，
+  亟待解决的问题就是CPU的瓶颈（特定页面更新频率下，组件更新不及时或过快导致的页面卡顿）和IO的瓶颈（请求时延过高）；
+  实际处理方式：将同步的更新变更为异步的可中断（浏览器时间分片用尽或有更高优任务插队）的更新。
+
+React 15 至 16: 解决每次状态更新组件都遍历迭代以及不可中断的问题；
+  1).在Reconciler & Renderer架构基础上，新增Scheduler（调度器）（即功能更为完备的RequestIdleCallback polyfill），决定哪些任务优先进入Reconciler；
+  2).Reconciler中加入shouldYeild（是否需要让步给浏览器主进程执行渲染）判断当前是否有剩余时间
+
+React 16起，任务执行可中断和继续，以保证js执行不阻塞页面渲染，造成页面卡顿（突破CPU更新频率可能带来的页面卡顿问题，实现保持页面响应）：
+
+  Concurrent module: Scheduler(调度器，高优先级任务优先进入Reconciler)  +  Reconciler(协调器，找出变化)(render & fiber & diff)  +  Renderer（渲染器，渲染diff）（dom render / react-native render / test render / act render）
+  任务优先级划分一共有5种：
+    ImmediatePrority（高优先级任务） / UserBlockingPriority（用户行为阻塞任务） / NormalPriority（平常任务，默认） / LowPriority（低优先级任务） / IdlePriority（闲时任务）
+  React根据不同优先级，给予任务expirationTime，优先级越高，expirationTime越快到来：eg：ImmediatePrority的expirationTime = -1；
+  scheduler（调度器，独立于react）直接调用并执行taskQueue（根据expirationTime生成的小顶堆）中第一个（即为当前最高优先级的）任务；将其传入Reconciler
+
+  react中组建的渲染分为两个阶段：
+    1.render阶段：可被react中断，一旦中断，则废弃；重新渲染时，重复执行之前废弃的部分（是对应变化被整理到current Fiber的过程吗？）
+  --------------分界点为render函数----------------
+    2.commit阶段：不能被中断（是对应渲染current Fiber为真实DOM并同步到workinprogress Fiber的过程吗？）
+
+  -----------------------------------------------
+  任务机制以及其优先级的处理应该是贯穿整个React库的，比如单个组件渲染或者组件内部的状态变化引起组件渲染等等。
+
+React 17共定义了18中不同优先级（lanes）来取代16版本的expirationTime，用二进制变量表示，默认为0b000000000000000000000000000000；越低优先级的lane占用的位数越多；
+  是一个稳定Concurrent Model的版本；另外使用lane重构了优先级算法；事件委托也有原来的根节点document变为自定义指定的root节点，目的是为了兼容多版本共存的场景
+
+  Reconciler将要变化的内容打上标记，如需要更新的：打上update，传入renderer时，renderer根据标记执行对应的操作；
+
+  React Fiber（React虚拟DOM === React Fiber）可以理解为：
+    React内部实现的一套状态更新机制。支持任务不同优先级，可中断与恢复，并且恢复后可以复用之前的中间状态。其中每个任务更新单元为React Element对应的Fiber节点。
+    Fiber节点可以保存对应的Dom节点，Fiber节点组成的Fiber树即对应DOM树
+
+  在内存中构建并直接替换的技术叫做双缓存，即workinprocess Fiber和current Fiber：
+    fiberRoot（整个应用的根节点）和rootFiber（组件树的根节点），初始化时 fiberRoot.current = rootFiber; rootFiber.current（指向current fiber） = null;
+    初次构建的fiber树赋值给workinprocess fiber（会尝试复用current fiber的fiber节点，首次渲染时current fiber为空），初次构建的fiber树构建完成commit之后，渲染时：
+      rootFiber.current = workinProcess fiber
+    current指针指向workinprocess fiber使其成为current fiber。以后每次更新都是先在内存中构建到workinprocess fiber，在current fiber渲染在页面之后，再重复。
 

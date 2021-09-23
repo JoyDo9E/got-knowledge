@@ -7,6 +7,16 @@
     serve -s dist（build后的文件夹）
 4.洗牌算法：
     （1）.高纳德算法，满足每张牌出现在每个位置的概率相同即可； 5张牌5个位置，第一张：1/5；第二张：4/5*（1/4）
+    function shuttle (arr) {
+      if (!Array.isArray(arr)) return [];
+      let res = [];
+      while(arr.length){
+          var r = Math.round(Math.random() * (arr.length - 1));
+          res.push(arr[r]);
+          arr.splice(r, 1);
+      }
+      return res;
+    }
     （2）.模拟从牌堆里面随机（*）不放回的取牌即可实现（malloc） 随机产生index，该位置无牌则顺位后移（前移）取牌，牌组长度不变；产生的index随机数随牌组的长度变化而变化，每取一张牌，牌组长度-1
 5.git相关：
     上传本地创建项目：
@@ -292,4 +302,70 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
 
 43. something >>> 0 ： 第一是非 number 转成 number 类型，第二是将 number 转成 Uint32 类型。
 
-44. debounce | throttle | forEach | map | filter | call | bind | apply方法手写？
+44. promise | debounce | throttle | forEach | map | filter | call | bind | apply方法手写？
+
+45. 浏览器发起请求步骤：
+  比如请求www.google.com
+  1).请求地址解析（查询浏览器缓存chrome/dns；查询客户端缓存hosts；查询com；查询Google.com），查询获取结果后，缓存。（每次返回ip地址可能不一致，负载均衡）
+  2).TCP三次握手建立连接，4次挥手断开连接。完成TCP链接。
+  3).http数据传输，（http: 80|8080;https:443），（keep-alive的作用就是保持TCP链接不断开，随时建立http数据交互请求）
+
+46.手写new：
+  function _new (obj, ...args) {
+    if (!obj) throw ('object is invalid');
+    const protoObj = Object.create(obj.prototype);
+    const newObj = obj.apply(protoObj, args);
+    if (newObj && (typeof newObj === 'Object' || typeof newObj === 'function')) return newObj;
+    return protoObj;
+  }
+
+47. 对象的constructor默认返回该对象（即this），可以使用return，但是必须返回一个对象。return了对象，则该对象实例就等于return的内容。
+
+48. “Function Component 是更彻底的状态驱动抽象，甚至没有 Class Component 生命周期的概念，只有一个状态，而 React 负责同步到 DOM。”
+    “Function Component 不存在生命周期，所以不要把 Class Component 的生命周期概念搬过来试图对号入座。Function Component 仅描述 UI 状态，React 会将其同步到 DOM，仅此而已。”
+    "诚实的代价"：(当在定时器里依赖多个参数执行叠加逻辑时，离散的useState无法满足，即每次依赖变化，都会重置定时器。必须依靠useReducer或者组合式useState。)
+    const [sum, setSum] = useState(0);
+    const [subSum, setSubSum] = useState(0);
+    useEffect(() => {
+      setInterval(() => setSum(prev => prev + subSum), 300);
+    }, [subSum]);
+
+    =====>
+
+    const [newSum, setNewSum] = useState(() => ({
+      sum: 0,
+      subSum: 0
+    }));
+    useEffect(() => {
+      setInterval(() => setNewSum(prev => ({
+        ...prev,
+        sum: prev.sum + prev.subSum
+      })), 300);
+    }, []);
+
+    也可使用useReducer,当两state派生逻辑太复杂时，倾向使用useReducer。组合useState是useReducer的子集
+
+  49. 监听页面关闭，强退等：
+    useEffect(() => {
+      const listener = (e) => {
+        e.preventDefault();
+        // e.returnValue = '.';
+        e.returnValue = '文章要保存吼，确定离开吗？';
+      };
+      window.addEventListener('beforeunload', listener);
+      return () => window.removeEventListener('beforeunload', listener);
+    }, []);
+
+    注意事项：
+      在beforeunload事件中的confirm，prompt，alert会被忽略。取而代之的是一个浏览器内置的对话框。（参考：MDN|beforeunload）
+      必须要有returnValue且为非空字符串，但是在某些浏览器中这个值并不会作为弹窗信息
+
+  50. 实例的__proto__属性暴露的是构造函数的prototype，即：instance.__proto__ === Function.prototype
+      function Person () {this.name = 'hi'};
+      const p = new Person();
+      p.__proto__ === Person.prototype; // true
+
+      原型对象的constructor指向构造函数，构造函数的prototype指向原型对象
+      const proto = Object.prototype
+      proto.constructor === Object
+
