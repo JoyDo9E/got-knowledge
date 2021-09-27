@@ -128,3 +128,46 @@ React 17共定义了18中不同优先级（lanes）来取代16版本的expiratio
       rootFiber.current = workinProcess fiber
     current指针指向workinprocess fiber使其成为current fiber。以后每次更新都是先在内存中构建到workinprocess fiber，在current fiber渲染在页面之后，再重复。
 
+---------------------------------------------------------------------
+React Element 与 React Component
+  1.jsx语法下的每一个标签在react处理的时候都会调用React.createElement方法转化为React.Element;判断是否为React.Element的方法是验证其是否是具有$$typeof属性切值等于REACT_ELEMENT_TYPE的非空Object类型对象。
+  2.在组件mount时，reconciler根据jsx描述的组件内容生成fiber节点（Fiber节点组成的Fiber树即渲染为Dom树）；在组件update时，
+    reconciler对比jsx描述的内容以及之前生成的fiber节点，生成组件对应的fiber节点，并打上相应的标记（placement/update/placementAndUpdate/Deletion）。
+
+Fiber节点的创建以及Fiber树的构建
+  1.render阶段有两个方法（jsx语法下React element生成Fiber节点，并由fiber节点构建fiber树的过程）;
+      performSyncWorkOnRoot: 不在乎当前帧是否有剩余时间，持续遍历
+      perforConcurrentWorkOnRoot: 函数实现会调用shouldYeild方法，即判断当前帧是否有剩余时间
+    即一个可以中断，一个不可中断。从rootFiber开始深度优先遍历每个fiber节点（beginWork方法），递归过程中，如果某一个叶子fiber节点（即无子节点）有兄弟节点，
+    则会继续遍历其兄弟节点，如无兄弟节点无子节点，则返回到其父节点，检测子节点以及兄弟节点，回归 & 重复此步骤。一直回归到rootFiber
+--------------------------------------------
+      备注：performUnitOfWork: 创建下一个fiber节点并赋值给workinprogress fiber, 创建其子fiber节点，形成fiber树。分为beginWork以及completeWork阶段，即“递” 与 “归”
+      递归过程中，如果某一个叶子fiber节点（即无子节点）有兄弟节点，
+      则会继续遍历其兄弟节点，如无兄弟节点无子节点，则返回到其父节点，检测子节点以及兄弟节点，回归 & 重复此步骤。一直回归到rootFiber
+      function performUnitOfWork(fiber) {
+        // 执行beginWork
+
+        if (fiber.child) {
+          performUnitOfWork(fiber.child);
+        }
+
+        // 执行completeWork
+
+        if (fiber.sibling) {
+          performUnitOfWork(fiber.sibling);
+        }
+      }
+      
+      // performSyncWorkOnRoot会调用该方法
+      function workLoopSync() {
+        while (workInProgress !== null) {
+          performUnitOfWork(workInProgress);
+        }
+      }
+
+      // performConcurrentWorkOnRoot会调用该方法
+      function workLoopConcurrent() {
+        while (workInProgress !== null && !shouldYield()) {
+          performUnitOfWork(workInProgress);
+        }
+      }

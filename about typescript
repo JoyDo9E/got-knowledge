@@ -262,3 +262,53 @@
         extends用于声明一个对象（Object类）时的类型继承，无需实现；
         implements用于声明一个类（class类）时的类型继承，需要实现内部的属性和方法。
 
+16.typescript官方api实现：
+
+    type Partial<T> = {
+      [P in keyof T]?: T[P]
+    }
+
+    type Require<T> = {
+      [P in keyof T]-?: T[P]
+    }
+
+    type Pick<T, K extends keyof T> = {
+      [P in K]: T[P]
+    }
+
+    /** 不清楚是怎样从T中去除了U中的部分的？-- 泛型原因 */
+    /** T和U均为联合类型的情况 */
+    type Exclude<T, U> = T extends U ? never : T;
+
+    /** 从T中提取为U的类型 */
+    type Extract<T, U> = T extends U ? T : U;
+
+    /** 直接执行Omit逻辑行不通；只能“在T中选出【选择T中除U之外的key】” */
+    type Omit<T, U> = Pick<T, Include<keyof T, U>>
+
+    type ReadOnly<T> {
+      readonly [K in keyof T]: T[K]
+    }
+
+    /** 表示传入的泛型T是任何类型的key，再赋值类型U */
+    type Record<T extends keyof any, U> = {
+      [K in T]: U
+    }
+
+    /** 返回函数的参数组成的元组 */
+    type Parameters<T extends (...args: any[]) => any> = T extends (...args: infer P) => any ? P : never;
+
+    /** 返回函数返回数据的类型 */
+    /** 泛型继承于函数，通过infer作为形参获取函数返回数据的类型 */
+    type ReturnType = <T extends (...args: any) => any> = T extends (...args: any) => infer P ? P : never;
+
+    /** T['length']可以获取泛型的长度 */
+    /** 获取元组 | 数组长度 */
+    type Length<T extends Array<any>> = T['length']
+
+    /** T[number]表示遍历数组（元组） */
+    /** 判断元组中是否包含某一元素 */
+    type IsInclude<T extends Array<any>, U> = {
+      [K in T[number]]: true;
+    }[U] extends true ? true : false
+

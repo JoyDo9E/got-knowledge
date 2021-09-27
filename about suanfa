@@ -1,2 +1,35 @@
 1.五大常用算法(分治算法、动态规划算法、贪心算法、回溯法、分治界限法)
+
+2.滑动窗口经典算法解决求解几数之和等于某个固定值，核心思想：
+  求n数之和为m，并返回数组项的下标，
+  a.先将数组递增排序；
+  b.固定前n-2个数字为固定数组项，滑动窗口的两指针a, b去指定另外两值，根据和的情况递归（大于m - sum(n-2)，则b -= 1; 小于m - sum(n-2)， 则 a += 1，直到a >= b）；
+  c.循环固定的数组项
+  综合时间复杂度为n的n-2次方。
+-------------------------------------
+  滑动窗口经典算法解决盛最多水的问题，核心思想：
+  固定长度（x轴距离）最大，递增变化宽度（y轴高度）,只有高度增加才有可能在长度变小的情况下保持面积变大的可能；利用滑动窗口双指针。
+
+  // 盛更多水的容器
+  var a = [[5, 6], [2, 9], [9, 2], [9, 3], [1, 6], [3, 2], [8, 2], [7, 1]];
+  function findMore (arr) {
+      if (!Array.isArray(arr) || arr.length < 2) return 0;
+      // x轴从小到大排序
+      var sorted = a.sort((a, b) => a[0] - b[0]);
+      console.log(sorted, 'sorted');
+      var resArr = [];
+      function recur (left, right) {
+          if (left >= right) return;
+          var isRightLess = sorted[left][1] > sorted[right][1]
+          var lessVal = isRightLess ? sorted[right][1] : sorted[left][1];
+          var lessIdx = isRightLess ? right : left;
+          console.log(`left:${left},right:${right},面积:${(sorted[right][0] - sorted[left][0]) * lessVal}`);
+          resArr.push((sorted[right][0] - sorted[left][0]) * lessVal);
+          // 变化高度小的值，递增（只有高度增加才有可能在长度变小的情况下保持面积变大的可能）
+          recur(isRightLess ? left : (left + 1), isRightLess ? (right-1) : right)
+      }
+      // 初始指针指向有序数组的开头 & 结尾
+      recur(0, sorted.length - 1);
+      return Math.max.apply(null, resArr);
+  }
   
