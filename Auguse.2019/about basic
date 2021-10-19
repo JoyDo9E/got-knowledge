@@ -369,3 +369,37 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
       const proto = Object.prototype
       proto.constructor === Object
 
+  51. JSON.stringify(obj[, filterFn | filterKeyArray[, 空格数]])只会转化value值不为undefined字段
+
+  52. 继承：构造函数部分的属性或方法为实例私有属性或方法，原型部分的属性或方法为实例公用属性或方法
+      eg. function Sup () {
+            this.name = 'pt'; 
+            this.arr = [1, 2];
+          }
+          Sup.prototype.array = [3, 4];
+          Sup.prototype.sayName = function () { console.log(this.arr); }
+          function Sub () {}
+          Sub.prototype = new Sup();
+          var sub = new Sub();
+
+          sub.arr.push(3);
+          sub.array.push(5); 
+          sub.sayName(); // [1, 2, 3]
+
+          var sup = new Sup();
+          sup.sayName(); // [1, 2]
+
+  53. 各种继承方法区别和侧重点：涉及到原型则有引用类型公用的问题，涉及到构造函数则有方法私有重复创建的问题，
+      涉及到组合式继承则有无法向超类传参和多次调用超类的问题；寄生式组合继承方法：原来Sub.prototype = new Sup();
+      （缺点：多次执行超类函数）改为Sub.prototype = Object.create(Sup.prototype)（直接复制超类原型）。
+
+  54. ES6的class式组件中成员属性和静态属性的区别：
+      class Person {
+        static today = '1019'; // 静态属性
+        constructor (name) {
+          this.name = name; // 成员属性
+        }
+      }
+      静态属性是定义在类的构造函数上的，而成员属性是定义在类的实例上的。
+
+

@@ -1,15 +1,68 @@
 1.nextjs项目babel问题,当引入的依赖中,存在无法被polyfill的语法或者函数时,处理方法:
 
-adding
- config.module.rules.push({
-      test: /\.js$/,
-      include: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env'],
-          plugins: ['@babel/plugin-syntax-dynamic-import']
+  adding
+  config.module.rules.push({
+        test: /\.js$/,
+        include: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-syntax-dynamic-import']
+          }
         }
-      }
-    });
-into my next.config.js fixed it by forcing it to also transpile all node_modules
+      });
+  into my next.config.js fixed it by forcing it to also transpile all node_modules
+
+2.SSG、SSR以及ISR的区别：
+
+  SSG: 即static site generation，使用getStaticProps从服务端获取数据以及会将动态路由处理成为json，使用getStaticPath方法获取路由数据。
+       本质是：会在构建过程中请求服务端数据，数据也会注入到页面中，生成静态html。
+       更新频率取决于构建的频率，每次构建重新生成新的静态页面。
+
+  ISG: incremental static regeneration, 在ssg的基础上增加请求频率即可。
+       固定频率重新请求接口，获取新数据生成全新静态页面。
+
+  SSR server side render，使用getServerSideProps方法从服务端获取数据并动态预加载 & 渲染页面
+       文档：https://www.nextjs.cn/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
+       每次请求都在服务端动态生成静态页面，返回客户端。服务端压力大，返回时延较上面俩方法更长，性能更低。适用于数据更新频繁的场景。
+
+  SSR:
+    import Page from '../Page';
+    import { getRandomAPI } from '../publicApis';
+
+    export default Page;
+
+    export async function getServerSideProps() {
+        const props = await getRandomAPI();
+        return { props };
+    }
+
+    SSG:
+    import Page from '../Page';
+    import { getRandomAPI } from '../publicApis';
+
+    export default Page;
+
+    export async function getStaticProps() {
+        const props = await getRandomAPI();
+        return { props };
+    }
+
+    ISR:
+    import Page from '../Page';
+    import { getRandomAPI } from '../publicApis';
+
+    export default Page;
+
+    export async function getStaticProps() {
+        const props = await getRandomAPI();
+        return { props, revalidate: 30 };
+    }
+
+3.非频繁变更的数据请求以及页面渲染，建议使用ssg（static site generation），在构建过程中完成数据请求；较活跃，改变较频繁的页面可以使用ssr（server side render）;
+  频繁变更的数据请求可以放置在客户端进行，使用官方推荐的swr方式
+  swr: https://swr.vercel.app/docs/getting-started
+  基于请求函数的再封装：能缓存请求返回数据；监听页面焦点以及休眠唤醒，重新请求刷新数据；一处请求，多处应用，同步获取数据（省去redux相关操作）；
+  import useSWR from 'swr'
+  const { data, error } = useSWR('/data/fetch', fetcher);

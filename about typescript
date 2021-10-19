@@ -284,7 +284,7 @@
     type Extract<T, U> = T extends U ? T : U;
 
     /** 直接执行Omit逻辑行不通；只能“在T中选出【选择T中除U之外的key】” */
-    type Omit<T, U> = Pick<T, Include<keyof T, U>>
+    type Omit<T, U> = Pick<T, Exclude<keyof T, U>>
 
     type ReadOnly<T> {
       readonly [K in keyof T]: T[K]

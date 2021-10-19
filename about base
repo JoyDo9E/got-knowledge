@@ -212,8 +212,17 @@
 
 20.缓存：强缓存 & 协商缓存
   强缓存： 
-    Expires(http 1.0): 为服务端返回的数据到期时间。当再次请求时的请求时间小于返回的此时间，则直接使用缓存数据。<现已使用cache-control替代>
-    cache-control(http 1.1): 
+    Expires(http 1.0): 为服务端返回的数据到期时间（绝对时间）。当再次请求时的请求时间小于返回的此时间，则直接使用缓存数据。<现已使用cache-control替代>
+    cache-control(http 1.1): max-age（单位s） / must-revalidate / no-cache / no-store / public / private
+
+    服务端配置强缓存生效（cache-control: 'max-age: 30'以及其过期时间）才会生效。客户端能设置强缓存失效（cache-control: no-store / no-cache mas-age=0）时有用。
+
+  协商缓存：
+    last-modified & last-modified-since 
+      如果资源更新的速度是秒以下单位，那么该缓存是不能被使用的，因为它的时间单位最低是秒。
+      如果文件是通过服务器动态生成的，那么该方法的更新时间永远是生成的时间，尽管文件可能没有变化，所以起不到缓存的作用。
+    
+    Etag（服务端文件生成的hash值） & If-None-Match
     
 
 21.css触发GPU硬件加速的方式，transform, filter, opacity;
@@ -251,6 +260,67 @@
   (4).class中的方法无法，无prototype，无[[constructor]]，无法被实例化，即new；
   (5).class必须用new才能实例化
   (6).class内部无法重写类名
-  (7).class内部无法重写类名
+
+25.浏览器事件循环机制：
+  宏任务： setTimeout / setInterval / setImmidiate / I/O(浏览器中操作indexDB) / UI render
+  微任务： process.nextTick / promise（async & await） / Object.observe（已废弃） / MutationObserver(DOM树更改监听)
+  (1).一个event loop可能存在一个或多个task（宏任务）队列，但只存在一个microtask（微任务）队列;
+  (2).脚本刚开始执行时，整体是一个宏任务队列的首项，压入执行，分解其中的宏任务和微任务。
+  (3).主线程中读取到事件回调处理线程时，会将其挂起在webapis中，当其被调用时，再将其回调压入宏任务队列中；
+  (4).异步请求线程执行异步请求返回数据后，（常规操作会使用promise即微任务接收反馈数据并处理，相当于异步请求这个宏任务执行逻辑中压入了一个微任务
+      执行相关回调（宏任务）；
+  (5).await之后的逻辑相当于放在promise.then中执行的逻辑，会压入微任务队列，即使await等待执行的是个同步逻辑。
+  (6).new Promise((resolve, reject) => {...//resolve & reject之前的逻辑都属于同步逻辑，在第一次执行时就会处理这部分逻辑})
+
+  完整流程：
+    脚本整体作为一个宏任务，压入执行栈，开始执行；运行过程中，发现微任务，压入microtask队列；继续执行当前宏任务；发现宏任务，压入macrotask队列；
+    当前宏任务执行完毕后，立即执行microtask栈中的微任务，微任务栈清空完毕后。循环。
+
+26. nodejs事件循环机制
+  ┌───────────────────────┐
+┌─>│        timers         │
+│  └──────────┬────────────┘
+│  ┌──────────┴────────────┐
+│  │     I/O callbacks     │
+│  └──────────┬────────────┘
+│  ┌──────────┴────────────┐
+│  │     idle, prepare     │
+│  └──────────┬────────────┘      ┌───────────────┐
+│  ┌──────────┴────────────┐      │   incoming:   │
+│  │         poll          │<──connections───     │
+│  └──────────┬────────────┘      │   data, etc.  │
+│  ┌──────────┴────────────┐      └───────────────┘
+│  │        check          │
+│  └──────────┬────────────┘
+│  ┌──────────┴────────────┐
+└──┤    close callbacks    │
+   └───────────────────────┘
+
+   外部输入数据 --> 轮询阶段（poll） --> 检查阶段(check) --> 关闭事件回调阶段(close callback) --> 定时器检查阶段(timer) --> I/O 事件回调阶段(I/O callbacks) --> 闲置阶段(idle, prepare) --> 轮询阶段...
+  这些阶段大致的功能如下：
+  定时器检测阶段(timers): 这个阶段执行定时器队列中的回调如 setTimeout() 和 setInterval()。
+  I/O事件回调阶段(I/O callbacks): 这个阶段执行几乎所有的回调。但是不包括close事件，定时器和setImmediate()的回调。
+  闲置阶段(idle, prepare): 这个阶段仅在内部使用，可以不必理会
+  轮询阶段(poll): 等待新的I/O事件，node在一些特殊情况下会阻塞在这里。
+  检查阶段(check): setImmediate()的回调会在这个阶段执行。
+  关闭事件回调阶段(close callbacks): 例如socket.on('close', ...)这种close事件的回调
+  poll：
+  这个阶段是轮询时间，用于等待还未返回的 I/O 事件，比如服务器的回应、用户移动鼠标等等。
+  这个阶段的时间会比较长。如果没有其他异步任务要处理（比如到期的定时器），会一直停留在这个阶段，等待 I/O 请求返回结果。
+  check:
+  该阶段执行setImmediate()的回调函数。
+
+  close:
+  该阶段执行关闭请求的回调函数，比如socket.on('close', ...)。
+
+  timer阶段:
+  这个是定时器阶段，处理setTimeout()和setInterval()的回调函数。进入这个阶段后，主线程会检查一下当前时间，是否满足定时器的条件。如果满足就执行回调函数，否则就离开这个阶段。
+
+  I/O callback阶段：
+  除了以下的回调函数，其他都在这个阶段执行：
+
+  setTimeout()和setInterval()的回调函数
+  setImmediate()的回调函数
+  用于关闭请求的回调函数，比如socket.on('close', ...)
 
 

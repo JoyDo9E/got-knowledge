@@ -171,3 +171,13 @@ Fiber节点的创建以及Fiber树的构建
           performUnitOfWork(workInProgress);
         }
       }
+
+
+------------------------------------------------------------------------------------
+
+HOOKS相关：
+
+每一种操作（如，useState,useMemo,useCallback）都会维护一个hook对象，对应的更新都存储在hook.queue中吗？
+
+1.单个组件的更新queue，更新产生的update对象会保存在queue中，会将组件每一次产生的变化update表现为一个单向循环链表： queue.pending = update1 (update1.next = update0; update0.next = update1;)
+2.functionComponent更新的队列queue会被存储在对应的fiber的属性memorizedState中，所以在hook中
