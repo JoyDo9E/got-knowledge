@@ -402,4 +402,13 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
       }
       静态属性是定义在类的构造函数上的，而成员属性是定义在类的实例上的。
 
+  55. CI持续集成、CD持续交互。即线上自动化部署。
+
+  56. Symbol相关：Symbol([description]) description: 对symbol的描述
+      1).返回的symbol值都是唯一的;
+      2).无法作为构造函数，即 new Symbol() // error; -> var a = Symbol('a'); var objA = Object(a);
+      3).Symbol.for / Symbol.keyFor会从全局的symbol注册表中设置和取得symbol; Symbol() / Symbol.for()用于设置symbol，Symbol.keyFor用于获取Symbol的描述key；
+      4).Object.getOwnPropertySymbols()用于获取symbol对象的转化而成的数组；
+      5).基本属性：Symbol.length / Symbol.prototype / 
+
 

@@ -76,3 +76,26 @@
     18).react函数式组件与类式组件的主要区别是，函数式组件捕获了渲染所使用的值，即函数式组件相当于其父组件的一个天然闭包，某一次传入的数据会被函数式组件中的异步函数“记住”，等同于类式组件render方法中执行。
         详情可见：https://overreacted.io/zh-hans/how-are-function-components-different-from-classes/
                  https://overreacted.io/zh-hans/making-setinterval-declarative-with-react-hooks/
+
+    19. useEffect会在浏览器完成布局与绘制之后，在一个延迟事件中被调用。所以用useEffect更新用户可见DOM是不太合理的，需要使用useLayout。(调用时机不同)
+
+    20.useCallback(fn, deps) 相当于 useMemo(() => fn, deps)
+
+    21.函数时组件的每次渲染都是独立的，包括其中的属性，方法等。这就是函数式组件的capture Value属性。（捕获属性）；
+       useRef可以绕开函数式组件的Capture Value属性，ref在render过程中始终保持唯一的引用，拿到的值都只有一个最终状态
+       即 ref is mutable & state is immutable
+
+    22. Function Componnet只描述UI状态，React负责将其同步到Dom，仅此而已。
+        舍弃了class component更新时的一些state新旧比对带来的性能问题，因此需要告诉React如何比对Effect，即[deps].
+
+    23. 本地和线上表现不一致，排查手段：升级本地所有的安装包至最新，查看效果。大概率是依赖版本不一致导致的。
+
+    24.npm依赖符号规则：
+       ^ 匹配最新的大版本依赖，如：^1.2.3 =>>> 1.2.3 <= x < 2.0.0 ; ^0.1.2 =>>> 0.1.2 <= x < 0.2.0
+       ~ 匹配最近的小版本依赖包，如：~1.2.3 =>>> 1.2.3 <= x < 1.3.0
+       >=、 <= ...
+       laster 匹配最新版本
+       * 任何版本
+       - 两版本之间 1.2.3 - 2.3.4
+
+    25.react-router升级5.2.0已上，useHistory不再触发router的整体context改变，其只维护自身的context，即路由变化时，依赖useHistory获取的路由信息不再同步触发更新。

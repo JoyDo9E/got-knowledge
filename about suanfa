@@ -32,4 +32,13 @@
       recur(0, sorted.length - 1);
       return Math.max.apply(null, resArr);
   }
+--------------------------------------
+  快慢指针可用于解决以下问题：
+  https://github.com/ascoders/weekly/blob/master/%E7%AE%97%E6%B3%95/199.%E7%B2%BE%E8%AF%BB%E3%80%8A%E7%AE%97%E6%B3%95%20-%20%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E3%80%8B.md
+    1.判断链表是否为循环链表；
+      fast指针移动速度是slow指针的2倍，判断在某一周期内是否能 list[fast] === list[slow]
+    2.判断链表的中点；
+      fast指针移动速度是slow指针的2倍，fast到达终点时，slow所指即为中点
+    3.原地删除数组中重复项，返回删除后的数组长度；
+
   

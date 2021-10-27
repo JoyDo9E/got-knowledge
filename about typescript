@@ -122,7 +122,7 @@
       private 修饰符指定的属性或方法只能在本类中使用，即Robot.name，不能继承或在其他地方使用；
       public 修饰符的属性或者方法是公用的在任何地方都能使用
       protected 修饰符的属性或者方法只能在本类或者子类中使用
-      static 修饰符修饰的方法或属性为类方法、类属性；父类与子类共有，只能用过类调用，不能通过实例调用
+      static 修饰符修饰的方法或属性为类方法、类属性；父类与子类共有，只能用类调用，不能通过实例调用
 
     写一个类的时候，不希望直接使用该类创建实例（即不能被new），可以创建抽象类使其不能被实例化
     abstract class Robot {
@@ -311,4 +311,7 @@
     type IsInclude<T extends Array<any>, U> = {
       [K in T[number]]: true;
     }[U] extends true ? true : false
+
+17. in 遍历联合类型；
+    keyof 将接口转化为由其key值结合的联合类型
 

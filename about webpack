@@ -5,3 +5,5 @@
     },
     extensions: ['js', 'jsx', 'vue']
   }
+
+2.webpack核心是一个：现代js应用的静态模块打包工具（a static module bundler for modern javascript application）
