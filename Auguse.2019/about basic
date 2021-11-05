@@ -411,4 +411,6 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
       4).Object.getOwnPropertySymbols()用于获取symbol对象的转化而成的数组；
       5).基本属性：Symbol.length / Symbol.prototype / 
 
+  57. 防止网站被在google上被搜索到： <meta name="googlebot" content="noindex">
+
 

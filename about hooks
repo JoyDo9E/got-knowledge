@@ -99,3 +99,7 @@
        - 两版本之间 1.2.3 - 2.3.4
 
     25.react-router升级5.2.0已上，useHistory不再触发router的整体context改变，其只维护自身的context，即路由变化时，依赖useHistory获取的路由信息不再同步触发更新。
+
+    26.父组件更新，子组件不使用memo的情况下，会被重新加载渲染。从fiber，dom diff角度如何解释？
+
+    27.React.memo只会浅比较传入组件的props。需要深比较时，可以通过React.memo的第二个参数传入一个自定义的比较函数。（props一致，未发生变化传入true，反之则反之）
