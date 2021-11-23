@@ -130,6 +130,7 @@ React 17共定义了18中不同优先级（lanes）来取代16版本的expiratio
 
 ---------------------------------------------------------------------
 React Element 与 React Component
+  0.Concurrent模式是一组react的新功能可帮助应用保持相应，并根据用户的设备性能和网速进行适当的调整。（设备性能 -> 刷新率，scheduler以及时间切片处理；网速 -> suspense以及后续hooks）
   1.jsx语法下的每一个标签在react处理的时候都会调用React.createElement方法转化为React.Element;判断是否为React.Element的方法是验证其是否是具有$$typeof属性切值等于REACT_ELEMENT_TYPE的非空Object类型对象。
   2.在组件mount时，reconciler根据jsx描述的组件内容生成fiber节点（Fiber节点组成的Fiber树即渲染为Dom树）；在组件update时，
     reconciler对比jsx描述的内容以及之前生成的fiber节点，生成组件对应的fiber节点，并打上相应的标记（placement/update/placementAndUpdate/Deletion）。

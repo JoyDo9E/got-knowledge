@@ -6,4 +6,27 @@
     extensions: ['js', 'jsx', 'vue']
   }
 
-2.webpack核心是一个：现代js应用的静态模块打包工具（a static module bundler for modern javascript application）
+2.webpack核心是一个：现代js应用的静态模块打包工具（a static module bundler for modern javascript application）;
+
+3.hash / chunkhash / contenthash的区别和使用场景
+  a.hash: 每次构建产生唯一hash值，每次均不一样。无论内容是否需改；
+  b.chunkhash: 由每次需要引入的chunk决定，chunk改变则hash改变；但是在react中，修改了一个bug，由此react文件抽出的css，以及js的hash都会发生改变，这是非预期的；
+  c.contenthash: 根据抽取的内容来生成hash。使hash发生改变的范围最小
+
+4.html-webpack-plugin的作用是将打包构建好的js和css文件，引入html模板中。
+
+5.cache-loader可用于缓存webpack打包各种loaders构建产物，下次构建前会对比决定是否重新构建。
+
+6.tree-shaking主要用于清除dead code（如不做tree-shaking, import {a} from b会引入模块b中其他不用的内容）；webpack4中设置mode:production已经默认开启tree-shaking
+要使tree-shaking生效，生成的代码必须是ES6模块；如果使用babel的话，会将任何代码转化为commonjs类型，导致tree-shaking失效；故需要配置babel：
+  {
+    "presets": [
+      ["@babel/preset-env",
+        {
+          "modules": false
+        }
+      ]
+    ]
+  }
+
+7.

@@ -413,4 +413,9 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
 
   57. 防止网站被在google上被搜索到： <meta name="googlebot" content="noindex">
 
+  58. react-router实现原理：利用pushState和replaceState只会改变页面url而不会触发popstate事件的原理，
+      通过pushState和replaceState改变页面地址，维护一个自定义的用于存储路由信息的栈，（pushState,replaceState时，
+      压入或替换路由信息）监听该栈数据改变(location改变触发UI更新回调，路由匹配，找到对应组件，更新渲染)，触发组件渲染变化，
+      使组件渲染，即页面渲染与当前地址对应，模拟地址切换页面渲染场景。
+
 

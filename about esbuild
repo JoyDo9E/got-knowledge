@@ -1,0 +1,4 @@
+esbuild中有大量的配置好的拓展项， 
+1.esbuild会默认转化jsx语法；
+2.如果想要在js文件中也能使用jsx语法，可以配置--loader:.js=jsx；
+3.
