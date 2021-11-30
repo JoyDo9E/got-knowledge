@@ -4,3 +4,17 @@
    2).react中状态更新可能导致大量重新渲染产生，结合react Fiber这个特殊的结构，需要时间切片；而vue的静态代码追踪、分析不需要时间切片，渲染更新也远达不到100ms
      （主要是vue的静态分析和追踪，解决了react中手动调用memo和purecomponent来优化复杂的超量重渲染 - over-re-render）
    3).极端情况下才会出现单次渲染时长超过100ms的情况。另外concurrent模式下的time-slicing带来了新的问题。
+
+2.vue3.2起，
+  a.<script setup>无需return返回属性值；
+  b.支持<style> v-bind写法：div { color: v-bind(color) };
+  c.props类型定义写法改变：
+    const props = defineProps<{
+      foo: string
+      bar?: number
+    }>()
+  d.emit写法改变：
+    const emit = defineEmits<{
+      (e: 'change', id: number): void
+      (e: 'update', value: string): void
+    }>()

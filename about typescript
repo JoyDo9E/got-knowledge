@@ -276,15 +276,16 @@
       [P in K]: T[P]
     }
 
-    /** 不清楚是怎样从T中去除了U中的部分的？-- 泛型原因 */
-    /** T和U均为联合类型的情况 */
-    type Exclude<T, U> = T extends U ? never : T;
+    以下泛型部分实际指代的均为联合类型
+      /** 不清楚是怎样从T中去除了U中的部分的？-- 泛型原因 */
+      /** T和U均为联合类型的情况 */
+      type Exclude<T, U> = T extends U ? never : T;
 
-    /** 从T中提取为U的类型 */
-    type Extract<T, U> = T extends U ? T : U;
+      /** 从T中提取为U的类型 */
+      type Extract<T, U> = T extends U ? T : U;
 
-    /** 直接执行Omit逻辑行不通；只能“在T中选出【选择T中除U之外的key】” */
-    type Omit<T, U> = Pick<T, Exclude<keyof T, U>>
+      /** 直接执行Omit逻辑行不通；只能“在T中选出【选择T中除U之外的key】” */
+      type Omit<T, U> = Pick<T, Exclude<keyof T, U>>
 
     type ReadOnly<T> {
       readonly [K in keyof T]: T[K]

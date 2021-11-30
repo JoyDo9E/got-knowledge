@@ -345,8 +345,25 @@
 29.webpack中loader相关：
     @babel/parser：将源代码转化为AST；file.readFile('path', 'utf-8', (err, data) => { // data});
     @babel/travarse：遍历生成的AST节点树，并可替换，删除，添加节点；
-    @babel/types：提供各种各样针对AST节点树的工具函数集，构建、校验、转换AST节点
     @babel/generator：AST => 代码 & sourcemap
+    @babel/types：提供各种各样针对AST节点树的工具函数集，构建、校验、转换AST节点, eg:
+      const parser = require('@babel/parser');
+      const t = require('@babel/types');
+      const traverse = require('@babel/traverse').default;
+
+      let code = 'function a() {}';
+      const ast = parser.parse(code);
+      traverse(ast, {
+        FunctionDeclaration(path) {
+          const node = path.node;
+          // 获取函数名称等
+          path.replaceWith();//替换为新的节点
+          path.remove(); // 删除当前节点
+          path.skip(); //跳过子节点(跳过子树遍历)
+          let copyNode = t.cloneNode(node);//复制当前节点
+          traverse(copyNode, {}, {}, path);// 对子树进行遍历和替换，不影响当前的path
+        }
+      });
 
 30.weakmap使用场景：
   1).数据缓存；比如：
@@ -355,3 +372,72 @@
     // 当手动垃圾回收p时，弱引用保存的数据也同时被删除
     p = null;
   2).私有化属性。
+
+31.defineProperty和proxy的使用区别：
+  proxy定义了多种数据存取属性方法，出了与defineProperty共有的getter和setter外，还有很多，见https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+  当使用 defineProperty，我们修改原来的 obj 对象就可以触发拦截，而使用 proxy，就必须修改代理对象，即Proxy的实例才可以触发拦截;
+
+32.惰性函数，就是基于闭包会缓存外作用域的数据的原理，解决多次重复执行幂等逻辑的问题，如定义foo函数并使其只执行一次判断且返回第一次执行的date：
+  function foo () {
+    let d = new Date();
+    /** 下次执行foo就执行新定义的foo函数，而新定义的foo函数中闭包缓存了第一次定义的date数据 */
+    foo = function () {
+      return d;
+    }
+    return foo();
+  }
+  另外，原生js浏览器兼容性处理时，（多次重复判断，结果幂等）也可使用惰性函数（缓存判断结果，避免重复判断）
+
+33.使用window.matchMedia('screen and (max-width: 999px)')来在js中使用媒体查询；
+   使用animation.fn在js中执行动画（既@keyframes **{}），详见https://developer.mozilla.org/zh-CN/docs/Web/API/Animation/effect
+
+34.class Demo { 
+    method () { 
+      // ...
+    }
+    method1 = function () {
+      // ...
+    }
+    method2 = () => {
+      // ...
+    }
+  },
+  method方法为对象的原型方法；method1和method2均为对象的实例方法；
+  1).对象字面量的this类型为该对象字面量本身（本身推导出来的类型）
+    let foo = {
+      x: 'name',
+      f(n: number) {
+        console.log(this); // this: {x: string; (n: number) => void}
+      }
+    }
+  2).标注了对象字面量的类型，则this的类型等于标注的类型
+    interface Foo {
+      name: string;
+      f: (n: number) => void
+    }
+    let foo: Foo = {
+      f (a) {
+        console.log(this); // this: Foo
+      }
+    }
+  3).如果对象字面量的方法标注了this的类型，则为标注的类型
+    let foo = {
+      f (this: { msg: string }) {
+        console.log(this); // this: { msg: string }
+      }
+    }
+  4).如果对象字面量进行了类型标注，且类型标注包含了ThisType[只有在--noImplicitThis配置了之后才会生效]，则this类型为ThisType的类型
+    type Foo = {
+      name: string;
+      age: number;
+      say: () => void;
+    } & ThisType<{ msg: boolean }>
+
+    let foo: Foo = {
+      name: '1',
+      age: 12,
+      // 箭头函数不适用，其this指向globalThis
+      say: function () {
+        console.log(this)
+      }
+    }
