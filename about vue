@@ -6,7 +6,10 @@
    3).极端情况下才会出现单次渲染时长超过100ms的情况。另外concurrent模式下的time-slicing带来了新的问题。
 
 2.vue3.2起，
-  a.<script setup>无需return返回属性值；
+  a.Top-level bindings are exposed to template
+    When using <script setup>, any top-level bindings (including variables, function declarations, and imports)
+    declared inside <script setup> are directly usable in the template:
+    <script setup>无需return返回属性值；其中的任何参数定义，函数声明，引入（组件、图片、静态数据）均直接暴露给模板
   b.支持<style> v-bind写法：div { color: v-bind(color) };
   c.props类型定义写法改变：
     const props = defineProps<{
@@ -18,3 +21,31 @@
       (e: 'change', id: number): void
       (e: 'update', value: string): void
     }>()
+  e.<script setup> is a compile-time syntactic sugar for using Composition API inside Single File Components (SFCs). 
+    这是一个编译时的、组合式API的、在单文件组件中的同步语法糖
+    It is the recommended syntax if you are using both SFCs and Composition API. It provides a number of advantages over the normal <script> syntax:
+    使用组合式api时的推荐方法，以下优点：
+    More succinct code with less boilerplate
+    更少模板，代码更简洁；
+    Ability to declare props and emitted events using pure TypeScript
+    具备使用纯typescript声明props和emit的能力；
+    Better runtime performance (the template is compiled into a render function in the same scope, without an intermediate proxy)
+    更好的运行时表现（模板被编译进同一作用域的render函数，而非中间件代理）
+    Better IDE type-inference performance (less work for the language server to extract types from code)
+    更好的编辑器类型检测表现；
+  f.可以使用defineExpose精确暴露setup语法糖中定义的反应
+    <script setup>
+      import { ref } from 'vue';
+      const a = 1;
+      const b = ref(2);
+      defineExpose({
+        a, b
+      })
+    </script>
+    这样在其父组件中使用ref访问该组件时，获取到其属性为{ a, b };
+  g.useSlots和useAttrs，可以在setup中直接使用这俩hook获取数据
+    <script setup>
+      import { useSlots, useAttrs } from 'vue'
+      const slots = useSlots()
+      const attrs = useAttrs()
+    </script>

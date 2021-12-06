@@ -73,6 +73,63 @@
           }
         }
 
+react-router-dom 6.0升级内容：
+  1.<Switch>变更为<Routes>
+      // v5
+      <Switch>
+          <Route exact path="/"><Home /></Route>
+          <Route path="/profile"><Profile /></Route>
+      </Switch>
+
+      // v6
+      <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="profile/*" element={<Profile />} />
+      </Routes>
+  2.<Route>的属性变更
+    原来的<Route component={} render={} /> 变更(统一)为 <Route element={} />，更方便简洁的使用嵌套路由
+  3.嵌套路由变得简单
+    <Route children />变更为可接受子路由；
+    匹配规则更简单，<Route exact /> <Route strict />;
+    路径层次更清晰；
+  4.hook变化：useHistory变更为useNavigate
+    // v5
+    history.push('/home');
+    history.replace('/home');
+
+    // v6
+    navigate('/home');
+    navigate('/home', {replace: true});
+
+  5.hook变化：useRoutes代替react-router-config
+    function App() {
+      let element = useRoutes([
+        { path: '/', element: <Home /> },
+        { path: 'dashboard', element: <Dashboard /> },
+        { path: 'invoices',
+          element: <Invoices />,
+          children: [
+            { path: ':id', element: <Invoice /> },
+            { path: 'sent', element: <SentInvoices /> }
+          ]
+        },
+        // 重定向
+        { path: 'home', redirectTo: '/' },
+        // 404找不到
+        { path: '*', element: <NotFound /> }
+      ]);
+      return element;
+    }
+  6.新标签<Outlet />，相当于vue的<router-view />，或者react的{this.props.children}，用于嵌套路由中次级路由嵌套展示子路由使用；
+  7.可同时使用多个<Routes />，
+  8.将<NavLink exact>替换为<NavLink end>；NavLink用于路由匹配时，导航样式的添加与删除；
+  9.将useRouteMatch替换为useMatch。用以判断当前是否匹配某一路由。
+    import { useMatch } from 'react-router-dom';
+    const isMatch = useMath('/post/:id');
+  
+
+
+
 拓展create-react-app创建的项目的webpack配置项方法：   https://blog.csdn.net/qq_22889599/article/details/79507721
 
 react-router-dom 包含 Link Route Switch BrowserRouter：（详细参见react-router-dom官方文档：https://reacttraining.com/react-router/web/api/Route/component）
