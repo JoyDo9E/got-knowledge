@@ -80,7 +80,7 @@
         class ClassWithInstanceField {
             instanceField = 'instance field';
         }
-        与静态共有字段 & 静态方法的区别在于，实例是否可访问
+        与静态共有字段 & 静态方法的区别在于：static字段只能自身访问（构造函数的一个属性）；public声明的字段只能实例访问（原型链上的属性）。
     (4).成员方法，只能被实例调用，以及子实例调用，不能被构造函数或者类直接调用
         class Person {
             arr: [1, 2], // 引用类型的值每个实例单独clone一份，互不影响
@@ -441,3 +441,35 @@
         console.log(this)
       }
     }
+
+  35. css解决瀑布流元素被截断问题：
+    &-w {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 1.33vw 4vw;
+      column-count: 2;
+      column-gap: 1.33vw;
+      background-color: #f5f5f5;
+      &-i {
+        width: 48vw;
+        margin-bottom: 1.33vw;
+        <--------以下部分--------->
+        height: 100%;
+        overflow: hidden;
+        -webkit-column-break-inside: avoid;
+        break-inside: avoid;
+        box-sizing: border-box;
+        <------------------------>
+      }
+    }
+
+  36.正则表达式匹配前后相同部分，或者匹配重复部分：
+    var a = 'abc|||abc';
+    var b = 'bcd|||bce';
+    var re = /^(.*?)\|\|\|\1/g; // 其中"\1"表示匹配前面分组，即"()"匹配的内容。
+
+  37.@redux/toolkit中createAsyncThunk方法创建一个异步处理action，其中rejectWithValue用于捕获异常的情况下，返回容错数据至state中；
+    可用unwrapResult提取负载或容错处理：
+      import { unwrapResult } from '@redux/toolkit';
+      dispatch(fetch(id)).then(unwrapResult).then(res => console.log(res));
+    详细可见：【https://blog.csdn.net/ilovethesunshine/article/details/109627560】

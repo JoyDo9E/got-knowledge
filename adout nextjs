@@ -71,3 +71,8 @@
   (1).对window以及process.browser标志位进行检测；然后对需要CSR的组件进行逻辑渲染。
   (2).在客户端进行two-pass rendering；即使用useEffect以及在componentDidMount生命周期中执行相关逻辑。
   (3).使用next.js提供的动态import + 禁用 SSR 【https://nextjs.org/docs/advanced-features/dynamic-import】
+
+5.类型推断问题：[https://github.com/vercel/next.js/discussions/17600]
+  // 需要写作GetStaticProps<EvaluationData>而非直接GetStaticProps，不然组件接收到的参数类型会丢失
+  export const getStaticProps: GetStaticProps<EvaluationData> = async () => {}
+  const Evaluation: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = props => {}

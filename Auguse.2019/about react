@@ -126,6 +126,14 @@ react-router-dom 6.0升级内容：
   9.将useRouteMatch替换为useMatch。用以判断当前是否匹配某一路由。
     import { useMatch } from 'react-router-dom';
     const isMatch = useMath('/post/:id');
+
+React17开始，react 自定义babel的两种方式
+--
+  npm update @babel/core @babel/plugin-transform-react-jsx
+  或 yarn upgrade @babel/core @babel/plugin-transform-react-jsx
+--
+  npm update @babel/core @babel/preset-react
+  或 yarn upgrade @babel/core @babel/preset-react
   
 
 
