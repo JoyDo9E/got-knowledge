@@ -127,6 +127,68 @@ react-router-dom 6.0升级内容：
     import { useMatch } from 'react-router-dom';
     const isMatch = useMath('/post/:id');
 
+------------------------------------------------------------------
+  a. hooks中更新状态数据后，组件重新渲染；它不是神奇的“data binding”, “watcher”, “proxy”，或者其他任何东西。仅仅是一个单纯的数据变更，一次快照。
+  函数组件会去调用这个更新后的状态数据；从而更新组件;
+  b. 当setState遇上计时器时，会缓存触发计时器时的数据，压入宏任务，待计时结束执行回调函数。【https://codesandbox.io/s/w2wxl3yo0l】;
+  c. React会记住你提供的effect函数，并且会在每次更改作用于DOM并让浏览器重绘之后去调用useEffect函数（传参为当时的数据）;
+    function Counter() {
+      const [count, setCount] = useState(0);
+      // useEffect不写依赖项[]意味着每次组件都会执行。
+      useEffect(() => {
+        setTimeout(() => {
+          console.log(`You clicked ${count} times`);
+        }, 3000);
+      });
+
+      return (
+        <div>
+          <p>You clicked {count} times</p>
+          <button onClick={() => setCount(count + 1)}>
+            Click me
+          </button>
+        </div>
+      );
+    }
+    // 依次打印：
+      You clicked 1 times
+      You clicked 2 times
+      You clicked 3 times
+      You clicked 4 times
+      You clicked 5 times
+  d. 类式组件的this.state.**总是指向一个最新的**值（一个值，每次渲染动态更新它的值），而不是属于某次渲染特定的值；函数式组件的useState的state指向
+    一个某次渲染特定的值（fiber的hook中维护了一个immutable的当前数据，每次按压入顺序调用队列中存储的hook函数，修改数据后，传给函数组件，得到最新值）
+  e. 每一个组件内的函数（包括事件处理函数，effects，定时器或者API调用等等）会捕获某次渲染中定义的props和state。
+  f. 在组件内什么时候去读取props或者state是无关紧要的。因为它们不会改变。在单次渲染的范围内，props和state始终保持不变。
+  g. 读取未来的props和state【逆潮而动】
+    function App() {
+      const [count, setCount] = useState(0);
+      const latestCount = useRef(count);
+      /** 每次count更新都会重新执行函数组件以及其useEffect闭包函数；latestCount.current每次
+        都会得到最新的count快照值，当定时器结束时，读取到最新的count */
+      useEffect(() => {
+        // Set the mutable latest value
+        latestCount.current = count;
+        setTimeout(() => {
+          // Read the mutable latest value
+          console.log(`You clicked ${latestCount.current} times`);
+        }, 3000);
+      });
+
+      return (
+        <div>
+          <p>You clicked {count} times</p>
+          <button onClick={() => setCount(count + 1)}>
+            Click me
+          </button>
+        </div>
+      );
+    }
+  h. 上一次的effect会在重新渲染后被清除，即useEffect中的返回函数，会在下次更新渲染完成后执行，然后再执行本次更新的effect：
+    渲染本次UI更新 -> 上一次更新的effect返回函数（清除函数）（捕捉【缓存】了上一轮渲染的props和state） -> 本次更新的effect函数
+  i. React只会在绘制后运行effects，组件内的每一个函数（包括事件处理函数，effects，定时器或者API调用等等），会捕捉定义它们的那次渲染中的props和state
+------------------------------------------------------------------
+
 React17开始，react 自定义babel的两种方式
 --
   npm update @babel/core @babel/plugin-transform-react-jsx

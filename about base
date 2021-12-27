@@ -473,3 +473,28 @@
       import { unwrapResult } from '@redux/toolkit';
       dispatch(fetch(id)).then(unwrapResult).then(res => console.log(res));
     详细可见：【https://blog.csdn.net/ilovethesunshine/article/details/109627560】
+
+  38.BFC【block formatting context】块级格式化上下文，触发BFC的条件：
+      a.根元素；
+      b.浮动元素，float不为none；
+      c.绝对定位元素，position: absolute / fixed;
+      d.内联块，display: inline-block;
+      e.表格单元格以及标题， display: table-cell / table-captain;
+      f.overflow不为visible的元素；
+      g.flex布局元素；
+      h.column-span: all; display: flow-root;
+    BFC可以解决1.垂直外边距重叠问题；2.去除浮动；3.适用N列布局。
+  
+  39.CORS【cross-origin resource sharing】跨域资源共享，允许服务器向跨域服务器发送请求。
+
+  40.优化首屏加载方法：
+    路由懒加载（利用Webpack的代码切割）
+    使用CDN加速，将通用的库从vendor进行抽离
+    Nginx的gzip压缩
+    Vue异步组件
+    服务端渲染SSR
+    如果使用了一些UI库，采用按需加载
+    Webpack开启gzip压缩
+    如果首屏为登录页，可以做成多入口
+    Service Worker缓存文件处理
+    使用link标签的rel属性设置   prefetch（这段资源将会在未来某个导航或者功能要用到，但是本资源的下载顺序权重比较低，prefetch通常用于加速下一次导航）、preload（preload将会把资源得下载顺序权重提高，使得关键数据提前下载好，优化页面打开速度）
