@@ -187,6 +187,7 @@ react-router-dom 6.0升级内容：
   h. 上一次的effect会在重新渲染后被清除，即useEffect中的返回函数，会在下次更新渲染完成后执行，然后再执行本次更新的effect：
     渲染本次UI更新 -> 上一次更新的effect返回函数（清除函数）（捕捉【缓存】了上一轮渲染的props和state） -> 本次更新的effect函数
   i. React只会在绘制后运行effects，组件内的每一个函数（包括事件处理函数，effects，定时器或者API调用等等），会捕捉定义它们的那次渲染中的props和state
+  j. useEffect能够根据props和state同步React Tree之外的东西；
 ------------------------------------------------------------------
 
 React17开始，react 自定义babel的两种方式

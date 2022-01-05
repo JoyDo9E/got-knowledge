@@ -59,3 +59,48 @@
         filter: blur(10px);
     }
 }
+
+/** shape-outside定义了一个可以是非矩形的形状，相邻的内联内容应围绕该形状进行包装 */
+/** https://codepen.io/mudontire/pen/eYGVzdz */
+div {
+  width: 760px;
+  text-align: justify;
+  margin: 100px auto;
+  background-color:#000;
+  color:#fff;
+}
+
+img {
+  width: 600px;
+  float: left;
+  /** 文案圆形围绕 */
+  shape-outside: circle(36%);
+}
+
+/** backdrop-filter 模糊或者颜色偏移用于设置了背景的区域，类似于局域毛玻璃 */
+/** backdrop-filter */
+.box {
+  width: 100vw;
+  height: 60vw;
+  background: url(https://images.unsplash.com/photo-1581938165093-050aeb5ef218) no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  padding: 20px 40px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 60px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  color: white;
+}
+
+/** 生成变色仪表盘 */
+// https://codepen.io/mudontire/pen/LYzQJLq
+// conic-gradient：围绕中心点旋转变色

@@ -497,4 +497,36 @@
     Webpack开启gzip压缩
     如果首屏为登录页，可以做成多入口
     Service Worker缓存文件处理
-    使用link标签的rel属性设置   prefetch（这段资源将会在未来某个导航或者功能要用到，但是本资源的下载顺序权重比较低，prefetch通常用于加速下一次导航）、preload（preload将会把资源得下载顺序权重提高，使得关键数据提前下载好，优化页面打开速度）
+    使用link标签的rel属性设置:
+      prefetch（这段资源将会在未来某个导航或者功能要用到，但是本资源的下载顺序权重比较低，prefetch通常用于加速下一次导航）、
+      preload（preload将会把资源得下载顺序权重提高，使得关键数据提前下载好，优化页面打开速度）
+
+  41.使用npm和yarn同步安装项目使用的依赖及其对应版本的方法：
+    npm ci --only=prod
+    yarn install --frozen-lockfile --production
+
+  42.useState的函数模式和useReducer可以有效的移除多余依赖，处理“诚实的代价”。
+
+  43.数据频繁变更，且请求依赖该数据时，注意《竞态》的处理,
+    用一个boolean值来跟踪某次请求，当下一次ID更新，则清除上一次未返回结果的请求:
+    function Article({ id }) {
+      const [article, setArticle] = useState(null);
+
+      useEffect(() => {
+        /** 用一个boolean值来跟踪某次请求，当下一次ID更新，则清除上一次未返回结果的请求 */
+        let didCancel = false;
+
+        async function fetchData() {
+          const article = await API.fetchArticle(id);
+          if (!didCancel) {
+            setArticle(article);
+          }
+        }
+
+        fetchData();
+
+        return () => {
+          didCancel = true;
+        };
+      }, [id]);
+    }

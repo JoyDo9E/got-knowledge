@@ -133,3 +133,41 @@
         xhr.responseType = 'blob';
         xhr.send();
       }
+
+  /** canvas插入文案定位方法嵌入原型, 用于处理文案动态居中 */
+    CanvasRenderingContext2D.prototype.letterSpacingText = function (text, x, y, letterSpacing) {
+      var context = this;
+      var canvas = context.canvas;
+      if (!letterSpacing && canvas) {
+        letterSpacing = parseFloat(window.getComputedStyle(canvas).letterSpacing);
+      }
+      if (!letterSpacing) {
+        return this.fillText(text, x, y);
+      }
+      var arrText = text.split('');
+      var align = context.textAlign || 'left';
+      // 这里仅考虑水平排列
+      var originWidth = context.measureText(text).width;
+      // 应用letterSpacing占据宽度
+      var actualWidth = originWidth + letterSpacing * (arrText.length - 1);
+      // 根据水平对齐方式确定第一个字符的坐标
+      if (align == 'center') {
+        x = x - actualWidth / 2;
+      } else if (align == 'right') {
+        x = x - actualWidth;
+      }
+      // 临时修改为文本左对齐
+      context.textAlign = 'left';
+      // 开始逐字绘制
+      arrText.forEach(function (letter) {
+        var letterWidth = context.measureText(letter).width;
+        context.fillText(letter, x, y);
+        // 确定下一个字符的横坐标
+        x = x + letterWidth + letterSpacing;
+      });
+      // 对齐方式还原
+      context.textAlign = align;
+    };
+  微信H5图片下载，拉起action sheet；需要动态绘制图片的，使用toDataUrl()而不能使用toBlob()，后者下载的图片异常。
+
+  微信H5上下拉动时，页面出现（微信自带的下拉刷新区域和上滑加载更多区域，交互性差，可以为body绑定touchmove事件，并使用e.preventDefault阻止默认事件，规避该现象）
