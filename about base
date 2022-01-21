@@ -328,7 +328,8 @@
 
 
 28.手写throttle函数：【https://github.com/mqyqingfeng/Blog/issues/26】
-  1. 时间戳方式（简易版）：
+  throttle就两种形式：leading和trailing，基于时间戳方式和setimeout方式综合而成的。
+  时间戳方式（简易版）：
     const throttle = (fn, delay) => {
       let args, context, previous = 0;
       return function () {
@@ -341,6 +342,30 @@
         }
       }
     }
+  
+  call & apply实现
+  fn.call(obj, params)可以看作将fn作为对象obj的属性并在其中执行后，返回结果，同时删除该新增属性，由于是ES3的方法，故参数使用eval拼接。call & apply同理，只是传参形式不同
+  // call
+  Function.prototype.call = function (context) {
+    var ctx = Object(context) || window;
+    var params = [];
+    for (var i = 1; i < arguments.length; i++;) {
+      params.push(arguments[i]);
+    }
+    ctx.fn = this;
+    var res = eval('ctx.fn(' + params + ')');
+    delete ctx.fn;
+    return res;
+  }
+  // apply
+  Function.prototype.apply = function (context) {
+    var ctx = Object(context) || window;
+    var params = arguments[1] || [];
+    ctx.fn = this;
+    var res = eval('ctx.fn(' + params + ')');
+    delete ctx.fn;
+    return res;
+  }
 
 29.webpack中loader相关：
     @babel/parser：将源代码转化为AST；file.readFile('path', 'utf-8', (err, data) => { // data});
@@ -374,7 +399,7 @@
   2).私有化属性。
 
 31.defineProperty和proxy的使用区别：
-  proxy定义了多种数据存取属性方法，出了与defineProperty共有的getter和setter外，还有很多，见https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+  proxy定义了多种数据存取属性方法，除了与defineProperty共有的getter和setter外，还有很多，见https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy
   当使用 defineProperty，我们修改原来的 obj 对象就可以触发拦截，而使用 proxy，就必须修改代理对象，即Proxy的实例才可以触发拦截;
 
 32.惰性函数，就是基于闭包会缓存外作用域的数据的原理，解决多次重复执行幂等逻辑的问题，如定义foo函数并使其只执行一次判断且返回第一次执行的date：
@@ -530,3 +555,7 @@
         };
       }, [id]);
     }
+
+  44.可以通过设置animation-play-state: paused / running来控制animation的运行状态或者暂停状态
+    animation-play-state: paused / running;
+    -webkit-animation-play-state: paused / running;

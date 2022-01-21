@@ -1,0 +1,2 @@
+1. 输出日志颜色装饰以及格式化：
+  git log --pretty=oneline --graph --decorate --all

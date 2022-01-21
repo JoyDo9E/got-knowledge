@@ -313,6 +313,19 @@
       [K in T[number]]: true;
     }[U] extends true ? true : false
 
-17. in 遍历联合类型；
-    keyof 将接口转化为由其key值结合的联合类型
+17. in 遍历联合类型；T in number | string | never
+    keyof 将接口转化为由其key值结合的联合类型 keyof { name: string; age: number } => name | age
+
+18. 定义函数类型时，"=>"和":"的使用：
+  除了函数表达式方式声明使用（将某一参数类型声明为函数类型）
+    type foo: (name: string) => string;
+  箭头指向返回类型外，其余均使用冒号
+    type Obj = {
+      (arg: argType): ReturnType
+    };
+    interface Obj {
+      (arg: argType): ReturnType
+    };
+    const foo: (arg: argType): ReturnType => { // ... }
+
 
