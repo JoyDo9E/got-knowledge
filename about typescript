@@ -328,4 +328,21 @@
     };
     const foo: (arg: argType): ReturnType => { // ... }
 
+19. 代码量较大时，为了防止出现命名冲突，可以声明命名空间，同一模块的类型放在同一命名空间类
+  // src/domain.d.ts
+  declare namespace Domains {
+    interface Demo {
+      name: string;
+      age: number;
+    }
+  }
+  // 使用
+  const a: Domains.Demo = {};
+
+20. 双重断言
+  当 S 类型是 T 类型的子集，或者 T 类型是 S 类型的子集时，S 能被成功断言成 T。这是为了在进行类型断言时提供额外的安全性，完全毫无根据的断言是危险的。
+  // 首先断言成兼容所有类型的 any，编译器将不会报错
+  function handler(event: Event) {
+    const element = (event as any) as HTMLElement; // ok
+  }
 

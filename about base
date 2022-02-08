@@ -559,3 +559,6 @@
   44.可以通过设置animation-play-state: paused / running来控制animation的运行状态或者暂停状态
     animation-play-state: paused / running;
     -webkit-animation-play-state: paused / running;
+
+  45.可以通过设置input标签的inputmode属性来设置移动端输入键盘的展示样式，详情可见：
+    https://www.zhangxinxu.com/wordpress/2022/02/html-inputmode-keyboard/
