@@ -41,4 +41,92 @@
       fast指针移动速度是slow指针的2倍，fast到达终点时，slow所指即为中点
     3.原地删除数组中重复项，返回删除后的数组长度；
 
+常见排序方法：
+// 冒泡排序
+function maopao (arr) {
+    if (!Array.isArray(arr))return [];
+    const len = arr.length;
+    for (var i=0;i<len;i++) {
+        for(var j=i+1;j<len;j++){
+            if (arr[i] > arr[j]) {
+                var temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    return arr;
+}
+
+// 快速排序
+function quick (arr) {
+    if (!Array.isArray(arr)) return [];
+    var len = arr.length;
+    if (len <= 1) return arr;
+    var pivotIndex = Math.ceil(len / 2), pivot = arr[pivotIndex], left = [], right = [];
+    arr.splice(pivotIndex, 1);
+    for (var i=0;i<len - 1; i++) {
+        arr[i] <= pivot ? left.push(arr[i]) : right.push(arr[i]);
+    }
+    // console.log(left, 'left');
+    // console.log(right, 'right');
+    return [...quick(left), pivot, ...quick(right)];
+}
+
+// 选择排序
+function selectSort (arr) {
+    if (!Array.isArray(arr))return [];
+    var len = arr.length;
+    for (var i=0;i<len;i++){
+        var minIdx = i;
+        for (var j=i+1;j<len;j++){
+            if (arr[minIdx] > arr[j]) {
+                minIdx = j;
+            }
+        }
+        var temp = arr[i];
+        arr[i] = arr[minIdx];
+        arr[minIdx] = temp;
+    }
+    return arr;
+}
+
+
+// 插入排序（O(n) - O(n2)）
+function insertSort (arr) {
+    if (!Array.isArray(arr)) return [];
+    var len = arr.length, pre, cur;
+    for (var i=1;i<len;i++) {
+        pre = i - 1;
+        cur = arr[i];
+        while (pre >= 0 && arr[pre] >= cur) {
+            arr[pre + 1] = arr[pre];
+            pre--;
+        }
+        arr[pre + 1] = cur;
+    }
+    return arr;
+}
+
+// 滑动窗口解决最长字串问题
+var lengthOfLongestSubstring = function(s) {
+    const len = s?.length;
+    if (!len) return 0;
+    const resMap = new Map();
+    const resArr = [];
+    for (let i=0; i< len; i++) {
+        resMap.set(s[i], s[i]);
+        for (let j=i+1; j<len; j++) {
+            if (resMap.has(s[j])) break;
+            resMap.set(s[j], s[j]);
+        }
+        resArr.push(resMap.size);
+        resMap.clear();
+    }
+    return Math.max.apply(null, resArr);
+};
+lengthOfLongestSubstring('abcabcbb'); // 3
+lengthOfLongestSubstring(' '); // 1
+lengthOfLongestSubstring('pwwkew'); // 3
+
   

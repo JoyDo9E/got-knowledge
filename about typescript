@@ -346,3 +346,12 @@
     const element = (event as any) as HTMLElement; // ok
   }
 
+21. 可使用类似于对象字面量方法读取interface 或者 type的某一键值类型，如：
+  type A = 'name';
+  interface Obj {
+    name: string;
+    age: number;
+  }
+  type C = Obj[A] // string
+
+

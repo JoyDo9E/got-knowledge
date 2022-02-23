@@ -320,3 +320,6 @@ V17.0.2定义了 20 种内部节点类型. 根据运行时环境不同, 分别�
   4.ReactComponent是 class 类型, 继承父类Component, 拥有特殊的方法(setState,forceUpdate)和特殊的属性(context,updater等)；
   5.在reconciler阶段, 会依据ReactElement对象的特征, 生成对应的 fiber 节点. 当识别到ReactElement对象是 class 类型的时候, 
     会触发ReactComponent对象的生命周期, 并调用其 render方法, 生成ReactElement子节点.
+
+redux原理：Provider组件（context.Provider）包裹所有的子组件，同时创建订阅对store数据的监听（每当store变化，将这个变化下发给所有子组件供其消费）；
+connect方法是一个HOC，作用是将mapStateToProps和mapDispatchToProps等方法通过props传入组件中供使用。

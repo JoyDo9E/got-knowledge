@@ -562,3 +562,15 @@
 
   45.可以通过设置input标签的inputmode属性来设置移动端输入键盘的展示样式，详情可见：
     https://www.zhangxinxu.com/wordpress/2022/02/html-inputmode-keyboard/
+
+  46.斐波拉契函数实现，非递归，时间复杂度O(n),空间复杂度O(1);
+  function fibonacci (n) {
+    if (n < 2) {
+        return n;
+    }
+    let cache = [0, 1];
+    for (let i = 2; i <= n; ++i) {
+        cache[i%2] = cache[0] + cache[1];
+    }
+    return cache[n%2];
+  }

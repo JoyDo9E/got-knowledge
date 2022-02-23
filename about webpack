@@ -28,3 +28,5 @@
       ]
     ]
   }
+
+7.修改了部分文件或者逻辑后，webpack未自动热更新，需要手动处理的场景：https://webpack.docschina.org/api/hot-module-replacement

@@ -206,7 +206,7 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
     }
 
 28. typescript中，数组类型，enum（枚举）类型，Tuple（元组）类型的区别：
-  数组类型：number[] | Array<number> 以及 Tuple类型：a: [number, string, boolean] 都是针对数组数据进行类型声明 [备注：js弱类型语言数组中可存入任何类型的元素，元组用以声明固定位置固定类型]
+  数组类型：number[] | Array<any> 以及 Tuple类型：a: [number, string, boolean] 都是针对数组数据进行类型声明 [备注：js弱类型语言数组中可存入任何类型的元素，元组用以声明固定位置固定类型]
   enum类型是对对象进行类型声明(并非类型声明，而是类型声明 + 赋值，可直接输出为一对象) enum x: {Up, Down, Left, Right}, 且带有自增性，即当前声明：x.Up // 0， x.Down // 1
 
 29."在 React 应用中，当某个组件的状态发生变化时，它会以该组件为根，重新渲染整个组件子树"
