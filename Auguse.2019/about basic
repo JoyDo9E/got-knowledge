@@ -422,4 +422,136 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
       压入或替换路由信息）监听该栈数据改变(location改变触发UI更新回调，路由匹配，找到对应组件，更新渲染)，触发组件渲染变化，
       使组件渲染，即页面渲染与当前地址对应，模拟地址切换页面渲染场景。
 
+  59. document.createDocumentFragment可以创建一个文档碎片；类似于react的<></>，将要插入的节点统一到该碎片中，最后一次性插入dom中。
 
+  60. Promise实现【class类中直接复制，相当于定义属性】:
+    a.Promise是一个类，执行时会传入一个执行器，这个执行器立即执行；
+    b.Promise有三种状态 fulfilled/rejected/pending，状态只能由pending -> fulfilled 或者 pending -> rejected；不可逆；
+    c.只有resolve和reject方法能改变Promise的状态值；
+    d.then方法用于通过状态判断执行对应的回调函数，fulfilled -> success / rejected -> fail
+    
+  // 简易版promise------------------------------------------------
+    const PENDING = 'pending';
+    const FULFILLED = 'fulfilled';
+    const REJECTED = 'rejected';
+    
+    class MyPromise {
+      constructor (executor) {
+        executor(this.resolve, this.reject);
+      }
+      // 状态
+      status = PENDING;
+      // 结果
+      result = null;
+      // 失败原因
+      reason = null;
+      resolve = (value) => {
+        if (this.status === PENDING) {
+          this.status = FULFILLED;
+          this.value = value;
+        }
+      };
+      reject = (reason) => {
+        if (this.status === PENDING) {
+          this.status = REJECTED;
+          this.reason = reason;
+        }
+      };
+      then (onFulfilled, onReject) {
+        if (this.status === FULFILLED) {
+          onFulfilled(this.value);
+        } else if (this.status === REJECTED) {
+          onReject(this.reason);
+        }
+      }
+    }
+  // --------------------------------------------------------------
+
+  // 简易版当exector为异步函数时，无法输出理想结果。在then函数调用之前必须改变status状态和result或者reason值
+  // 进阶版
+  const PENDING = 'pending';
+  const FULFILLED = 'fulfilled';
+  const REJECTED = 'rejected';
+
+  // 判断一次then回调调用之后的结果是否是自定义类型
+  const judgeBackInfo = (back, resolve, reject) => {
+    if (back instanceof MyPromise) {
+      back.then(resolve, reject);
+    } else {
+      resolve(back);
+    }
+  }
+
+  class MyPromise {
+    constructor (executor) {
+      executor(this.resolve, this.reject);
+    }
+    // 新增成功以及失败回调函数缓存，用以在then函数执行时，状态值为pending，缓存传入的处理函数
+    // onFulfilledCallback = null;
+    // onRejectedCallback = null;
+
+    // 数组形式用于保存多个then函数的调用处理
+    onFulfilledCallback = [];
+    onRejectedCallback = [];
+
+    // 状态
+    status = PENDING;
+    // 结果
+    result = null;
+    // 失败原因
+    reason = null;
+    resolve = (value) => {
+      if (this.status === PENDING) {
+        this.status = FULFILLED;
+        this.value = value;
+        // this.onFulfilledCallback && this.onFulfilledCallback(this.value);
+        while (this.onFulfilledCallback.length) {
+          this.onFulfilledCallback.shift()(value);
+        }
+      }
+    };
+    reject = (reason) => {
+      if (this.status === PENDING) {
+        this.status = REJECTED;
+        this.reason = reason;
+        // this.onRejectedCallback && this.onRejectedCallback(this.reason);
+        while (this.onRejectedCallback.length) {
+          this.onFulfilledCallback.shift()(reason);
+        }
+      }
+    };
+    then (onFulfilled, onReject) {
+
+      // 递归调用，这样才能支持链式调用then方法
+      return new MyPromise((resolve, reject) => {
+        if (this.status === FULFILLED) {
+          // 执行成功的情况下，支持继续执行下一then回调
+          const thenRes = onFulfilled(this.value);
+          judgeBackInfo(thenRes, resolve, reject);
+        } else if (this.status === REJECTED) {
+          onReject(this.reason);
+        } else {
+          // 处理单个then函数调用的情况
+          // this.onFulfilledCallback = onFulfilled;
+          // this.onRejectedCallback = onReject;
+
+          /** 多个then函数调用的情况，非链式调用 */
+          this.onFulfilledCallback.push(onFulfilled);
+          this.onRejectedCallback.push(onReject);
+        }
+      })
+      // if (this.status === FULFILLED) {
+        // onFulfilled(this.value);
+      // } else if (this.status === REJECTED) {
+        // onReject(this.reason);
+      // } else {
+        // 处理单个then函数调用的情况
+        // this.onFulfilledCallback = onFulfilled;
+        // this.onRejectedCallback = onReject;
+
+        /** 多个then函数调用的情况，非链式调用 */
+        // this.onFulfilledCallback.push(onFulfilled);
+        // this.onRejectedCallback.push(onReject);
+      // }
+    }
+  }

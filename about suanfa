@@ -129,4 +129,24 @@ lengthOfLongestSubstring('abcabcbb'); // 3
 lengthOfLongestSubstring(' '); // 1
 lengthOfLongestSubstring('pwwkew'); // 3
 
+// 两非递减数组合并问题处理
+/**
+ * @return {void} Do not return anything, modify nums1 in-place instead.
+ */
+var merge = function(nums1, m, nums2, n) {
+    nums1.length = m;
+    for (let i=0; i<n; i++) {
+        let cur = nums2[i];
+        let numsIdx = nums1.length - 1;
+        while (numsIdx >= 0) {
+            if (cur >= nums1[numsIdx]) break;
+            numsIdx--;
+        }
+        nums1.splice(numsIdx + 1, 0, cur);
+    }
+    return nums1;
+};
+merge([1,2,3,0,0,0],3,[2,5,6],3);
+merge([1],1);
+merge([0],0,[1],1)
   
