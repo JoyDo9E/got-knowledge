@@ -555,3 +555,10 @@ HashRouter的结果（如：遍历子路由或孙路由时，再次嵌套路由�
       // }
     }
   }
+
+  61. 使用以下方式设置元素的自定义css变量的值: 1. element.style.getPropertyValue('--demo-name'); 
+    2.getComputedStyle(ele).getPropertyValue('--demo-name');
+    3.【设置css自定义变量的值】lement.style.setProperty("--my-var", 'xxx');
+  62. let style = window.getComputedStyle(element, [pseudoElt]); 通过getComputedStyle获取元素的属性；
+
+  63. 事件循环中，定时器，异步调用只是在定时结束、请求返回后，将其对应的回调函数压入事件队列中，等待执行。（定时器不准的原因）
